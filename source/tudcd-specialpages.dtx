@@ -263,7 +263,8 @@
   tudcdpage.zweitlogo.oben,
   tudcdpage.zweitlogo.unten,
   tudcdpage.qrcode
-}
+} % Titelseiten
+\DeclarePageStyleByLayers{tudcdquotepage}{}
 %    \end{macrocode}
 %
 % % Als letztes wird eine Hintergrundebene angelegt, welche die Hintergrundfarbe der Seite beeinflussen kann.
@@ -285,7 +286,7 @@
     align=tl,
     area={0pt}{0pt}{\paperwidth}{\paperheight},
     contents={%
-    \noindent\ifdefempty{\tudcd@pagecolor}{\meaning\tudcd@pagecolor}{\color{\tudcd@pagecolor}\rule{\layerwidth}{\layerheight}}},
+    \noindent\ifdefempty{\tudcd@pagecolor}{}{\color{\tudcd@pagecolor}\rule{\layerwidth}{\layerheight}}},
     background
   ]{tudcdpage.pagecolor}
 %    \end{macrocode}
@@ -335,18 +336,20 @@
 \NewDocumentEnvironment{tudcdtitlepage}{ O{} }
   {
   \tudcd@logogermantrue
-  \clearpage%
   \newgeometry{%
-    paper=\tudcd@selectedpaperformat,%
     inner=\tudcd@innermargin,%
     outer=\tudcd@outermargin,%
-    top=\tudcd@outermargin+2\tudcd@logoheight,% Oberer Abstand + Schutzraum
-    bottom=\tudcd@bottommargin+2\tudcd@secondlogoheight%
+    top=\tudcd@innermargin,% Oberer Abstand + Schutzraum
+    bottom=\tudcd@bottommargin%
   }%
   \setlength{\tudcd@gridcolumnwidth}{\tudcd@getgridcolumnwidth{4}}%
   \thispagestyle{tudcdtitlepage}%
+  \noindent\rule{\textwidth}{2\tudcd@logoheight}%
   }
-  {\restoregeometry} % zurüksetzen auf die alte Geometrie
+  {
+  \vfill%
+  \noindent\rule{\textwidth}{2\tudcd@secondlogoheight}%
+  \restoregeometry} % zurücksetzen auf die alte Geometrie
 %    \end{macrocode}
 % \end{codedescribe}
 %
@@ -375,7 +378,7 @@
     bottom=\tudcd@bottommargin%
   }%
   \setlength{\tudcd@gridcolumnwidth}{\tudcd@getgridcolumnwidth{4}}%
-  \thispagestyle{plain}%
+  \thispagestyle{tudcdquotepage}%
   }%
 {%
 \restoregeometry%
