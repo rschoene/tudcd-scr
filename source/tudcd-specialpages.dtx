@@ -213,13 +213,13 @@
   \DeclareLayer[
     align=bl,
     area={\tudcd@innermargin}{\paperheight-\tudcd@innermargin-\tudcd@secondlogoheight}{\textwidth}{\tudcd@secondlogoheight},
-    contents={\color{Magenta1}\rule{\layerwidth}{\layerheight}},
+    contents={\color{white}\rule{\layerwidth}{\layerheight}},
     foreground
   ]{tudcdpage.zweitlogo.oben}
   \DeclareLayer[
     align=bl,
     area={\tudcd@innermargin}{\paperheight-\tudcd@innermargin}{\textwidth-\tudcd@gridcolumnwidth-\tudcd@gridcolumnsep}{\tudcd@secondlogoheight},
-    contents={\color{Magenta2}\rule{\layerwidth}{\layerheight}},
+    contents={\color{white}\rule{\layerwidth}{\layerheight}},
     foreground
   ]{tudcdpage.zweitlogo.unten}
 %    \end{macrocode}
@@ -332,6 +332,8 @@
 % Die \denv{tudcdtitlepage} Umgebung ist ein Analogon zur \denv{titlepage} Umgebung des \KOMAScript{}-Pakets~\cite{komascriptDocs}.
 % Im Unterschied zur \denv{titlepage} Umgebung wird hierbei das Seitenlayout verändert, um den Schutzbereich des Logos einzuhalten.
 %
+% \todo{Auf der Seite nach der Titelseite ist die Fußzeile verrutscht.}
+%
 %    \begin{macrocode}
 \NewDocumentEnvironment{tudcdtitlepage}{ O{} }
   {
@@ -344,11 +346,13 @@
   }%
   \setlength{\tudcd@gridcolumnwidth}{\tudcd@getgridcolumnwidth{4}}%
   \thispagestyle{tudcdtitlepage}%
-  \noindent\rule{\textwidth}{2\tudcd@logoheight}%
+  \vspace*{2\tudcd@logoheight}%
+  %\noindent\rule{\textwidth}{2\tudcd@logoheight}%
   }
   {
   \vfill%
-  \noindent\rule{\textwidth}{2\tudcd@secondlogoheight}%
+  \vspace*{2\tudcd@secondlogoheight}%
+  %\noindent\rule{\textwidth}{2\tudcd@secondlogoheight}%
   \restoregeometry} % zurücksetzen auf die alte Geometrie
 %    \end{macrocode}
 % \end{codedescribe}
