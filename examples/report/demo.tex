@@ -1,76 +1,79 @@
-\documentclass[a4paper,twoside,fontsize=12pt]{tudcdartcl}
+\documentclass[oneside,useseriffont=false,fontsize=cdfont]{tudcdreprt}
 \usepackage[T1]{fontenc}
-\usepackage[ngerman=ngerman-x-latest]{hyphsubst}
+%\usepackage[ngerman=ngerman-x-latest]{hyphsubst}
 
-\usepackage[ngerman]{babel}
+\usepackage[english]{babel}
 \usepackage[babel]{microtype}
+%\babelprovide[hyphenrules=ngerman-x-latest]{ngerman}
 \usepackage{blindtext}
 \usepackage{xcolor}
-\selectcolormodel{cmyk}
-\usepackage{tudcdcolor}
+
+\usepackage{amsmath}
+\usepackage{accents}
+\usepackage{mathtools}
+\let\openbox\undefined
+\usepackage{keytheorems}
+%\usepackage{showframe}
+
+\selectcolormodel{RGB}
+%\usepackage{tudcdcolor}
 
 %\TUDCDoption{paper}{a4paper}
 \TUDCDoption{usemargin}{true}
+\TUDCDoption{logocolor}{blue}
+\TUDCDoption{logolang}{english}
+%\TUDCDoption{logomodel}{cmyk}
 
 \usepackage{multicol}
 \usepackage{marginnote}
 \usepackage{csquotes}
+\usepackage{ragged2e}
 %\usepackage{tudcdfonts}
 
-\iffalse
-% Which paper did the authors have in mind when they created the document?
-\immediate\pdfobj stream attr{/N 4} file{PSOuncoated_v3_FOGRA52.icc}
-\pdfcatalog{%
-  /OutputIntents [ <<
-    /Type /OutputIntent
-    /S /GTS_PDFX
-    /DestOutputProfile \the\pdflastobj\space 0 R
-    /Info(PSO Uncoated ISO12647 (ECI))
-    /OutputCondition(Offset printing, according to ISO 12647-2:2004/Amd1, OFCOM, paper type 4 = uncoated white, 115 g/m2, tone value increase curves C (CMY) and D (K))
-    /OutputConditionIdentifier (Uncoated FOGRA47)
-    /RegistryName(http://www.color.org)
-  >>
-  <<
-    /Type /OutputIntent
-    /S /GTS_PDFA1
-    /DestOutputProfile \the\pdflastobj\space 0 R
-    /Info(PSO Uncoated ISO12647 (ECI))
-    /OutputCondition(Offset printing, according to ISO 12647-2:2004/Amd1, OFCOM, paper type 4 = uncoated white, 115 g/m2, tone value increase curves C (CMY) and D (K))
-    /OutputConditionIdentifier (Uncoated FOGRA47)
-    /RegistryName(http://www.color.org)
-  >> ]
-}
-\fi
 
 \makeatletter
 \newcommand\getfontsize{\f@size}%
+\NewCommandCopy\getgridwidth\tudcd@getgridcolumnwidth%
 \makeatother
 
+\title{Numerische Untersuchungen verschiedener Algorithmen zur Lösung von Kristallplastizitätsmodellen bei kleinen Deformationen}
+\subtitle{Ein Streifzug durch die Mikrophysik, Gruppentheorie, Festkörpermechanik, Konvexe Analysis, Optimierung und Implementierung}
+\author{Jochen Diepelt}
+\date{\languagename}
+
+\selectcolormodel{cmyk}
+
+\sethighlightcolor{Brilliantblau}
+
 \begin{document}
+\makeatletter
+\maketitle
+\tableofcontents%
 
-\raggedright
+\clearpage%
+
+\RaggedRight
+
 \begin{multicols}{2}
-    \blindtext
-    \marginnote{\raggedright Hallo ich bin ein Text in der Marginalie}
-
-    \blindtext[3]
-    \marginnote{\raggedright Hallo ich bin ein Text in der Marginalie}
-
-    \blindtext[4]
-    \marginnote{\raggedright Hallo ich bin ein Text in der Marginalie}
-
-    \blindtext[2]
-    \marginnote{\raggedright Hallo ich bin ein Text in der Marginalie}
-
-    \blindtext[5]
-    \marginnote{\raggedright Hallo ich bin ein Text in der Marginalie}
+\blinddocument
+\blindmathpaper
 \end{multicols}
 
-\clearpage
+
+\begin{tudcdquotepage}[Rot2]
+  \ZitatGrossgroesse\noindent\raggedright\textcolor{Brilliantblau}{\textrm{\textcdl{\textit{
+    \enquote{Lasst, die ihr eintretet, alle Hoffnung fahren!}}}}}\par
+\end{tudcdquotepage}
+
+
+\chapter{Schriftvorstellung mit einem Kapiteltitel, welcher über zwei Spalten geht}
 
 Ich bin ein Pangramm
 
+\begin{multicols}{2}
 Stanleys Expeditionszug quer durch Afrika wird von jedermann bewundert.
+
+\section{Besondere Auszeichnungsbefehle}
 
 \verb|\textbf|
 \textbf{Stanleys Expeditionszug quer durch Afrika wird von jedermann bewundert.}
@@ -97,6 +100,9 @@ Stanleys Expeditionszug quer durch Afrika wird von jedermann bewundert.
 \textit{Stanleys Expeditionszug quer durch Afrika wird von jedermann bewundert.}
 %
 
+
+\subsection{Besondere Auszeichnungsbefehle in Kombinationen}
+
         Stanleys \textbf{Expeditionszug} \textrm{quer} \textsf{durch} \texttt{Afrika} \textsl{wird} \textsc{von} \textup{jedermann} \textit{bewundert.}
 
 \textbf{Stanleys \textbf{Expeditionszug} \textrm{quer} \textsf{durch} \texttt{Afrika} \textsl{wird} \textsc{von} \textup{jedermann} \textit{bewundert.}}
@@ -115,6 +121,8 @@ Stanleys Expeditionszug quer durch Afrika wird von jedermann bewundert.
 
 \textit{Stanleys \textbf{Expeditionszug} \textrm{quer} \textsf{durch} \texttt{Afrika} \textsl{wird} \textsc{von} \textup{jedermann} \textit{bewundert.}}
 
+
+\subsection{Sind alle Glyphen vorhanden?}
 
 Dieser Satz besteht aus acht A, sechs B, sechs C, sieben D, fünfundvierzig E, acht F, vier G, neun H,
 fünfundzwanzig I, einem J, einem K, zwei L, elf M, achtundzwanzig N, einem O, einem P, einem Q, sieben R,
@@ -162,9 +170,7 @@ dreizehn S, sieben T, sieben U, fünf V, vier W, einem X, einem Y, zehn Z, einem
 %dreizehn S, sieben T, sieben U, fünf V, vier W, einem X, einem Y, zehn Z, einem Ä, einem Ö, vier Ü und einem ß.}
 
 
-\begin{multicols}{2}
-{\tiny Ich bin \verb|\tiny| mit \getfontsize,\the\baselineskip{}
-Eine Schüssel mit kaltem Wasser füllen, Kartoffeln schälen und 2/3 der Kartoffeln g in das Wasser reiben (so bleiben die Kartoffeln hell und werden nicht so schnell braun). \par}
+{\tiny Ich bin \verb|\tiny| mit \getfontsize,\the\baselineskip{} \par}
 
 {\scriptsize Ich bin \verb|\scriptsize| mit \getfontsize,\the\baselineskip\par}
 
@@ -183,12 +189,15 @@ Eine Schüssel mit kaltem Wasser füllen, Kartoffeln schälen und 2/3 der Kartof
 {\huge Ich bin \verb|\huge| mit \getfontsize,\the\baselineskip\par}
 \end{multicols}
 
-\pagebreak
 
-\pagecolor{Gruen2}
-\ZitatGrossgroesse\noprotrusion\textcolor{Brilliantblau}{\textrm{\textcdl{\textit{
-\enquote{Ich weiß ja nicht.}}}}}
 
+
+\begin{tudcdquotepage}[Gruen2]
+  \ZitatGrossgroesse\noindent\raggedright\textcolor{Brilliantblau}{\textrm{\textcdl{\textit{
+    \enquote{Das Beste an der \\ TUD ist, dass der Schwerpunkt auf der Forschung liegt.
+    Es ist ganz wichtig, dass die Dozent:innen uns nicht nur von der gängigen Praxis erzählen,
+    sondern auch einen Ausblick für die Zukunft geben.}}}}}\par
+\end{tudcdquotepage}
 
 \newpage
 \nopagecolor
