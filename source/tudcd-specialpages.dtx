@@ -131,45 +131,45 @@
     {blue}{%
   \iftudcd@logogerman
     \iftudcd@colormodelrgb%
-\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_RGB_horizontal_blau_de.eps}}
+\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_RGB_horizontal_blau_de}}
     \else % colormodelrgb
-\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_de.eps}}
+\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_de}}
     \fi % colormodelrgb
   \else % logogerman
     \iftudcd@colormodelrgb%
-\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_RGB_horizontal_blau_en.eps}}
+\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_RGB_horizontal_blau_en}}
     \else % colormodelrgb
-\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_en.eps}}
+\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_en}}
     \fi % colormodelrgb
   \fi % logogerman
     }%
     {white}{%
 \iftudcd@logogerman
     \iftudcd@colormodelrgb%
-\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_RGB_horizontal_weiss_de.eps}}
+\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_RGB_horizontal_weiss_de}}
     \else % colormodelrgb
-\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_CMYK_horizontal_weiss_de.eps}}
+\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_CMYK_horizontal_weiss_de}}
     \fi % colormodelrgb
   \else % logogerman
     \iftudcd@colormodelrgb%
-\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_RGB_horizontal_weiss_en.eps}}
+\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_RGB_horizontal_weiss_en}}
     \else % colormodelrgb
-\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_CMYK_horizontal_weiss_en.eps}}
+\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_CMYK_horizontal_weiss_en}}
     \fi % colormodelrgb
   \fi % logogerman
     }%
     {black}{%
 \iftudcd@logogerman
     \iftudcd@colormodelrgb%
-\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_RGB_horizontal_schwarz_de.eps}}
+\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_RGB_horizontal_schwarz_de}}
     \else % colormodelrgb
-\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_CMYK_horizontal_schwarz_de.eps}}
+\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_CMYK_horizontal_schwarz_de}}
     \fi % colormodelrgb
   \else % logogerman
     \iftudcd@colormodelrgb%
-\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_RGB_horizontal_schwarz_en.eps}}
+\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_RGB_horizontal_schwarz_en}}
     \else % colormodelrgb
-\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_CMYK_horizontal_schwarz_en.eps}}
+\resizebox*{!}{#1}{\includegraphics{logo/TUD-Logo_CMYK_horizontal_schwarz_en}}
     \fi % colormodelrgb
   \fi % logogerman
     }%
@@ -286,7 +286,7 @@
   \DeclareLayer[
     align=bl,
     area={\tudcd@innermargin+3\tudcd@gridcolumnsep+3\tudcd@gridcolumnwidth}{\paperheight-\tudcd@innermargin}{\tudcd@gridcolumnwidth}{\tudcd@secondlogoheight},
-    contents={\hfill\footnotesize\color{Brilliantblau} \url{https://tu-dresden.de}\hfill\raisebox{0.25\layerheight}{\qrcode[height=0.6667\layerheight]{https://tu-dresden.de}}},
+    contents={\hfill\fontsize{7pt}{9pt}\selectfont\color{Brilliantblau} \url{https://tu-dresden.de}\hfill\raisebox{0.25\layerheight}{\qrcode[height=0.6667\layerheight]{https://tu-dresden.de}}},
     foreground
   ]{tudcdpage.qrcode}
 %    \end{macrocode}
@@ -319,6 +319,11 @@
   tudcdpage.zweitlogo.oben,
   tudcdpage.zweitlogo.unten,
   tudcdpage.qrcode
+} % Titelseiten
+\DeclarePageStyleByLayers{tudcdtitleheadpage}{
+  tudcdpage.logo,
+  tudcdpage.zweitlogo.oben,
+  tudcdpage.zweitlogo.unten
 } % Titelseiten
 \DeclarePageStyleByLayers{tudcdquotepage}{}
 %    \end{macrocode}
@@ -410,6 +415,16 @@
   %\noindent\rule{\textwidth}{2\tudcd@secondlogoheight}%
   \restoregeometry} % zurücksetzen auf die alte Geometrie
 %    \end{macrocode}
+% \end{codedescribe}
+%
+% \begin{codedescribe}[env,new=0.5.4]{tudcdheadingpage}
+% \begin{codesyntax}
+% \tsmacro{\begin{tudcdheadingpage}}[Optionen]
+% \ldots
+% \tsmacro{\end{tudcdheadingpage}}{}
+% \end{codesyntax}
+%
+% Die \denv{tudcdheadingpage} Umgebung setzt eine Seite ohne Zweitlogos und ohne QR-Code. Damit soll
 % \end{codedescribe}
 %
 % \begin{codedescribe}[env,new=0.5.3]{tudcdquotepage}
