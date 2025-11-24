@@ -79,12 +79,17 @@
 %
 % \subsection{Die Stildatei}
 %
-% \dpkg{beamer} sammelt die einzelnen Einstellungen in einer Gesamtdatei, welche den
+% \dpkg{beamer} sammelt die einzelnen Einstellungen in einer Gesamtdatei, welche über
+% \tsmacro{\usetheme}{Stilname} eingebunden werden kann.
+% Optionen, welche alle Einzelstile betreffen, sollten daher in dieser Datei deklariert werden.
 %
 %    \begin{macrocode}
 %<*beamertheme>
+\NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{beamerthemetudcd}[2025/08/30]
 %    \end{macrocode}
+%
+%
 %
 %    \begin{macrocode}
 \DeclareOptionBeamer{noheader}{\PassOptionsToPackage{noheader}{beamerouterthemetudcd}}
@@ -105,7 +110,7 @@
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\ProcessOptionsBeamer
+\ProcessOptionsBeamer%
 %    \end{macrocode}
 \usecolortheme{tudcd}
 \usefonttheme{tudcd}
@@ -118,7 +123,8 @@
 %
 %    \begin{macrocode}
 %<*beameroutertheme>
-\ProvidesPackage{beamerouterthemetud}[2025/08/30 v0.1 Outer beamer theme in the Corporate Design of TU Dresden]
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerouterthemetudcd}[2025/08/30 v0.1 Outer beamer theme in the Corporate Design of TU Dresden]
 
 \newif\if@useHeader\@useHeadertrue
 \DeclareOptionBeamer{noheader}{\@useHeaderfalse}
@@ -867,7 +873,8 @@
 %
 %    \begin{macrocode}
 %<*beamerinnertheme>
-\ProvidesPackage{beamerinnerthemetud}[2025/08/30 v0.1 Inner beamer theme in the Corporate Design of TU Dresden]
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerinnerthemetudcd}[2025/08/30 v0.1 Inner beamer theme in the Corporate Design of TU Dresden]
 \def\tudbeamer@inner@style{cd2025}
 \DeclareOptionBeamer{cd2025}{\def\tudbeamer@inner@style{cd2025}}
 
@@ -967,7 +974,8 @@
 %
 %    \begin{macrocode}
 %<*beamercolortheme>
-\ProvidesPackage{beamercolorthemetud}[2025/08/30 v0.1 Simon Praetorius]
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamercolorthemetudcd}[2025/08/30 v0.1 Simon Praetorius]
 \def\tudbeamer@color@style{cd2025}
 \DeclareOptionBeamer{cd2025}{%
   \PassOptionsToPackage{cd2025}{tudcolors}%
@@ -1109,7 +1117,8 @@
 %
 %    \begin{macrocode}
 %<*beamerfonttheme>
-\ProvidesPackage{beamerfontthemetudcd}[2025/08/30 v0.1 TU Dresden font theme for Beamer class]
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerfontthemetudcd}[2025/08/30 v0.1 Beamer Color theme for the Corporate Design of the TU Dresden]
 
 \newif\if@sansmath\@sansmathtrue
 
