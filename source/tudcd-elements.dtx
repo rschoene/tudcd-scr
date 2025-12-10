@@ -153,6 +153,20 @@
 \setkomafont{footnote}{\footnotesize\upshape}
 %    \end{macrocode}
 %
+% \begin{codedescribe}[
+% new=0.5.4,
+% macro
+% ]{\margintudline}
+% \begin{codesyntax}
+% \tsmacro{\margintudline}[]{}
+% \end{codesyntax}
+%
+%
+%    \begin{macrocode}
+%
+%    \end{macrocode}
+% \end{codedescribe}
+%
 % Der Titel und Untertitel wird auch entsprechend eingestellt
 % \todo{Wenn jetzt nicht fontsize=cdfont gewählt wird, was mache ich dann?}
 %
@@ -165,33 +179,69 @@
 %    \end{macrocode}
 %
 % \begin{codedescribe}[
-  % new=0.5.3,
-  % macro
-  % ]{\maketitle}
-  %
-  %    \begin{macrocode}
+% new=0.5.3,
+% macro
+% ]{\maketitle}
+% \begin{codesyntax}
+% \tsobj[macro]{\maketitle}
+% \end{codesyntax}
+% Das ist der Befehl, welcher die Titelei setzt.
+%
+%    \begin{macrocode}
 \providecommand{\maketitle}{}
+%<*article>
+\renewcommand{\maketitle}{%
+\thispagestyle{tudcdtitleheadpage}
+
+\begingroup
+  \setlength{\tudcd@gridcolumnwidth}{\tudcd@getgridcolumnwidth{4}}%
+  \setlength{\parindent}{0pt}%
+  \raggedright%
+  \vspace*{2\tudcd@logoheight}%
+
+  {\noprotrusion\noindent\usekomafont{titlehead}\@titlehead\par}
+
+  {\noprotrusion\noindent\usekomafont{title}\@title\par}
+
+  {\noprotrusion\noindent\usekomafont{subtitle}\@subtitle\par}
+
+  {\noprotrusion\noindent\usekomafont{subject}\@subject\par}
+
+  \bigskip
+
+  {\noprotrusion\noindent\usekomafont{author}\@author\par}
+
+  \bigskip
+
+  {\noprotrusion\noindent\usekomafont{date}\@date\par}
+\endgroup
+}
+%</article>
+%<*report|book>
 \renewcommand{\maketitle}{%
 \begin{tudcdtitlepage}
-  {\usekomafont{titlehead}\noindent\@titlehead\par}
+  \raggedright%
 
-  {\usekomafont{title}\noindent\@title\par}
+  {\usekomafont{titlehead}\noprotrusion\noindent\@titlehead\par}
 
-  {\usekomafont{subtitle}\noindent\@subtitle\par}
+  {\usekomafont{title}\noprotrusion\noindent\@title\par}
 
-  {\usekomafont{subject}\noindent\@subject\par}
+  {\usekomafont{subtitle}\noprotrusion\noindent\@subtitle\par}
 
-  \bigskip
-
-  {\usekomafont{author}\noindent\@author\par}
+  {\usekomafont{subject}\noprotrusion\noindent\@subject\par}
 
   \bigskip
 
-  {\usekomafont{date}\noindent\@date\par}
+  {\usekomafont{author}\noprotrusion\noindent\@author\par}
+
+  \bigskip
+
+  {\usekomafont{date}\noprotrusion\noindent\@date\par}
 
   \vfill
 \end{tudcdtitlepage}
 }%
+%</report|book>
 %    \end{macrocode}
 %
 % \end{codedescribe}

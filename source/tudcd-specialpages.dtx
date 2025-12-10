@@ -269,13 +269,13 @@
   \DeclareLayer[
     align=bl,
     area={\tudcd@innermargin}{\paperheight-\tudcd@innermargin-\tudcd@secondlogoheight}{\textwidth}{\tudcd@secondlogoheight},
-    contents={\color{white}\rule{\layerwidth}{\layerheight}},
+    contents={},
     foreground
   ]{tudcdpage.zweitlogo.oben}
   \DeclareLayer[
     align=bl,
     area={\tudcd@innermargin}{\paperheight-\tudcd@innermargin}{\textwidth-\tudcd@gridcolumnwidth-\tudcd@gridcolumnsep}{\tudcd@secondlogoheight},
-    contents={\color{white}\rule{\layerwidth}{\layerheight}},
+    contents={},
     foreground
   ]{tudcdpage.zweitlogo.unten}
 %    \end{macrocode}
@@ -322,8 +322,8 @@
 } % Titelseiten
 \DeclarePageStyleByLayers{tudcdtitleheadpage}{
   tudcdpage.logo,
-  tudcdpage.zweitlogo.oben,
-  tudcdpage.zweitlogo.unten
+%  tudcdpage.zweitlogo.oben,
+%  tudcdpage.zweitlogo.unten
 } % Titelseiten
 \DeclarePageStyleByLayers{tudcdquotepage}{}
 %    \end{macrocode}
@@ -359,7 +359,7 @@
 % Anschließend werden die einzelnen Seitenstile umdefiniert.
 %    \begin{macrocode}
 \pagestyle{plain.tudcdheadings}
-\renewcommand{\chapterpagestyle}{plain.tudcdheadings}
+%<report|book>\renewcommand{\chapterpagestyle}{plain.tudcdheadings}
 %    \end{macrocode}
 %
 %
