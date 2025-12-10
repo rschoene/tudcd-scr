@@ -5,7 +5,6 @@
 \usepackage[english]{babel}
 \usepackage[babel]{microtype}
 \babelprovide[hyphenrules=ngerman-x-latest]{ngerman}
-\usepackage{blindtext}
 \usepackage{xcolor}
 
 \usepackage{amsmath}
@@ -19,7 +18,7 @@
 %\usepackage{tudcdcolor}
 
 %\TUDCDoption{paper}{a4paper}
-\TUDCDoption{usemargin}{true}
+\TUDCDoption{usemargin}{false}
 \TUDCDoption{logocolor}{blue}
 %\TUDCDoption{logolang}{english}
 %\TUDCDoption{logomodel}{cmyk}
@@ -29,6 +28,7 @@
 \usepackage{csquotes}
 \usepackage{ragged2e}
 %\usepackage{tudcdfonts}
+\usepackage{blindtext}
 
 
 \makeatletter
@@ -41,7 +41,7 @@
 \author{Jochen Diepelt}
 \date{\today}
 
-\selectcolormodel{cmyk}
+%\selectcolormodel{cmyk}
 \sethighlightcolor{Brilliantblau}
 
 \begin{document}
@@ -55,8 +55,12 @@
 \RaggedRight
 
 \begin{multicols}{2}
-\blinddocument
-\blindmathpaper
+
+\chapter{Ich bin Titel}
+
+Ich bin ein Text, welcher etwas Struktur.
+
+%\blindmathpaper
 \end{multicols}
 
 
@@ -75,6 +79,7 @@ Stanleys Expeditionszug quer durch Afrika wird von jedermann bewundert.
 
 \section{Besondere Auszeichnungsbefehle}
 
+Was ist ein Text
 \verb|\textbf|
 \textbf{Stanleys Expeditionszug quer durch Afrika wird von jedermann bewundert.}
 
