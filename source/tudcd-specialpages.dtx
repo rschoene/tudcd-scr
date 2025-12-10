@@ -396,8 +396,12 @@
 % \todo{Auf der Seite nach der Titelseite ist die Fußzeile verrutscht.}
 %
 %    \begin{macrocode}
-\NewDocumentEnvironment{tudcdtitlepage}{ O{} }
+\NewDocumentEnvironment{tudcdtitlepage}{ o }
   {
+  \global\let\tudcd@oldpagecolor\tudcd@pagecolor%
+  \IfValueT{#1}{
+    \tudcd@set@pagecolor{#1}%
+  }%
   \newgeometry{%
     inner=\tudcd@innermargin,%
     outer=\tudcd@outermargin,%
@@ -413,7 +417,9 @@
   \vfill%
   \vspace*{2\tudcd@secondlogoheight}%
   %\noindent\rule{\textwidth}{2\tudcd@secondlogoheight}%
-  \restoregeometry} % zurücksetzen auf die alte Geometrie
+  \restoregeometry
+\global\let\tudcd@pagecolor\tudcd@oldpagecolor%
+  } % zurücksetzen auf die alte Geometrie
 %    \end{macrocode}
 % \end{codedescribe}
 %

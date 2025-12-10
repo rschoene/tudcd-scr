@@ -170,12 +170,30 @@
 % Der Titel und Untertitel wird auch entsprechend eingestellt
 % \todo{Wenn jetzt nicht fontsize=cdfont gewählt wird, was mache ich dann?}
 %
+%
+% \begin{codedescribe}[macro,new=0.5.3]{\tudcd@titlepagecolor,\tudcd@titlefontcolor}
+% Um auf Titelseiten die Farben des Hintergrunds und der Schrift einzustellen, werden
+% separat diese Hilfsmakros deklariert, welche lediglich den Namen der Farbe speichern.
+% Im Rahmen des Setzens der Titelei werden diese gelesen und anschließend genutzt.
+%    \begin{macrocode}
+\providecommand\tudcd@titlepagecolor{Weiss}
+\providecommand\tudcd@titlefontcolor{Schwarz}
+\newcommand\tudcd@set@titlepagecolor[1]{%
+  \gdef\tudcd@titlepagecolor{#1}%
+}%
+\newcommand\tudcd@set@titlefontcolor[1]{%
+  \gdef\tudcd@titlefontcolor{#1}%
+}%
+%    \end{macrocode}
+% \end{codedescribe}
+%
+%
 %    \begin{macrocode}
 \setkomafont{title}{\fontsize{44}{45}\selectfont\tudcd@elements@fontcolor\sffamily\bfseries}
 \setkomafont{subtitle}{\fontsize{25}{30}\selectfont\tudcd@elements@fontcolor\sffamily}
-\setkomafont{author}{\sffamily\Huge}
-\setkomafont{subject}{\normalfont\Huge}
-\setkomafont{date}{\Huge}
+\setkomafont{author}{\sffamily\tudcd@elements@fontcolor\Huge}
+\setkomafont{subject}{\normalfont\tudcd@elements@fontcolor\Huge}
+\setkomafont{date}{\tudcd@elements@fontcolor\Huge}
 %    \end{macrocode}
 %
 % \begin{codedescribe}[
@@ -194,6 +212,10 @@
 \thispagestyle{tudcdtitleheadpage}
 
 \begingroup
+  \let\tudcd@elements@oldfontcolor\tudcd@elements@fontcolor
+  \sethighlightcolor{\tudcd@titlefontcolor}
+
+  \tudcd@set@pagecolor{\tudcd@titlepagecolor}
   \setlength{\tudcd@gridcolumnwidth}{\tudcd@getgridcolumnwidth{4}}%
   \setlength{\parindent}{0pt}%
   \raggedright%
@@ -214,12 +236,16 @@
   \bigskip
 
   {\noprotrusion\noindent\usekomafont{date}\@date\par}
+
+  \let\tudcd@elements@fontcolor\tudcd@elements@oldfontcolor
 \endgroup
 }
 %</article>
 %<*report|book>
 \renewcommand{\maketitle}{%
-\begin{tudcdtitlepage}
+\begin{tudcdtitlepage}[\tudcd@titlepagecolor]
+  \let\tudcd@elements@oldfontcolor\tudcd@elements@fontcolor
+  \sethighlightcolor{\tudcd@titlefontcolor}
   \raggedright%
 
   {\usekomafont{titlehead}\noprotrusion\noindent\@titlehead\par}
@@ -239,6 +265,8 @@
   {\usekomafont{date}\noprotrusion\noindent\@date\par}
 
   \vfill
+
+  \let\tudcd@elements@fontcolor\tudcd@elements@oldfontcolor
 \end{tudcdtitlepage}
 }%
 %</report|book>
