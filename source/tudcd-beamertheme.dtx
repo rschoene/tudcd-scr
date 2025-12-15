@@ -92,24 +92,28 @@
 %
 %    \begin{macrocode}
 \ProcessOptionsBeamer%
+%    \end{macrocode}
+%
+% Die Geometrie von
+%
+%    \begin{macrocode}
+\setlength{\beamer@paperwidth}{160mm}
+\setlength{\beamer@paperheight}{90mm}
+\geometry{
+  paperwidth=160mm,
+  paperheight=90mm,
+%  includefoot,
+  top=0mm, %
+%  bottom=13.3mm,
+% footskip=20mm,
+  left=8mm,
+  right=8mm,
+}
+
 \usecolortheme{tudcd}
 \usefonttheme{tudcd}
 \useoutertheme{tudcd}
 \useinnertheme{tudcd}
-%    \end{macrocode}
-%
-%
-%    \begin{macrocode}
-
-\beamer@paperwidth 338.67mm
-\beamer@paperheight 190.5mm
-\geometry{
-  paperwidth=338.67mm,
-  paperheight=190.5mm,
-  top=11mm,
-  bottom=11mm,
-  left=17mm,
-  right=17mm}
 \AtBeginDocument{\usebeamerfont{normal text}}
 
 %</beamertheme>
@@ -119,16 +123,136 @@
 %
 % Der \enquote{äußere} Stil stellt alle Gestaltungselemente außerhalb der Folieninhalte ein.
 %
+% Hierbei wird auch die Größe des \enquote{Textbereichs} durch die Größe der Fußzeile und Kopfzeile bestimmt.
+% Jedoch werden essenzielle Längenregister zur Bestimmung des Textbereichs nicht gesetzt.
 %
 %    \begin{macrocode}
 %<*beameroutertheme>
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{beamerouterthemetudcd}[2025/08/30 v0.1 Outer beamer theme in the Corporate Design of TU Dresden]
 
+%    \end{macrocode}
+%
+% \begin{codedescribe}[macro,new=0.5.4]{
+% \tudcd@beamerouter@topbottommargin,
+% \tudcd@beamerouter@leftrightmargin,
+% \tudcd@beamerouter@logoheight,
+% \tudcd@beamerouter@secondlogoheight,
+% \tudcd@beamerouter@smalllogoheight,
+% \tudcd@beamerouter@exlusionheight
+% }
+%
+% Die hier definierten Längen speichern die Größen des Corporate Designs. Aus Ihnen leiten sich alle weiteren Längen der Gestaltungselemente ab.
+%    \begin{macrocode}
+\newlength\tudcd@beamerouter@topbottommargin%
+\newlength\tudcd@beamerouter@leftrightmargin%
+\newlength\tudcd@beamerouter@logoheight%
+\newlength\tudcd@beamerouter@secondlogoheight%
+\newlength\tudcd@beamerouter@smalllogoheight%
+\newlength\tudcd@beamerouter@exlusionheight%
+\newlength\tudcd@beamerouter@columnsep%
+\newlength\tudcd@beamerouter@columnwidth%
+%%
+\setlength\tudcd@beamerouter@topbottommargin{5.2mm}
+\setlength\tudcd@beamerouter@leftrightmargin{8.0mm}
+\setlength\tudcd@beamerouter@logoheight{8.75mm}
+\setlength\tudcd@beamerouter@secondlogoheight{5.2mm}
+\setlength\tudcd@beamerouter@smalllogoheight{2.1mm}
+\setlength\tudcd@beamerouter@exlusionheight{2.9mm}
+\setlength\tudcd@beamerouter@columnsep{2.4mm}
+\setlength\tudcd@beamerouter@columnwidth{\dimexpr((160mm-2\tudcd@beamerouter@leftrightmargin-11\tudcd@beamerouter@columnsep)/12)}
+%    \end{macrocode}
+% \end{codedescribe}
+%
+% Um die Größe des Fußes einzuhalten werden die \enquote{besseren} Boxen des Pakets \dpkg{xcoffins} zu nutzen.
+%
+%    \begin{macrocode}
+\RequirePackage{xcoffins}
+%    \end{macrocode}
+%
+% Das sind die vier coffins welche insgesamt den Fuß darstellen.
+%    \begin{macrocode}
+\NewCoffin\tudcd@beamerouter@exclusionzone
+\NewCoffin\tudcd@beamerouter@smalllogo
+\NewCoffin\tudcd@beamerouter@smallfootline
+\NewCoffin\tudcd@beamerouter@secondlogo
+%    \end{macrocode}
+%
+%
+%    \begin{macrocode}
+\mode<presentation>
+
 \ProcessOptionsBeamer\relax
+%    \end{macrocode}
+%
+% Die Beamertemplate \dcode{headline} wird genutzt um den Freihalterand einzustellen.
+% Aus Gründen die zum Zeitpunkt des Schreibens unklar sind, wird immer 1pt zuviel angegeben. Daher wird dieser Punkt hierbei bereits abgezogen.
+%    \begin{macrocode}
+\defbeamertemplate*{headline}{tudcd}{\vspace{\tudcd@beamerouter@topbottommargin-1pt}}
+%    \end{macrocode}
+%
+% Die Beamertemplate \dcode{frametitle} setzt den Folientitel und Untertitel. Da das Corporate Design keinen Folienuntertitel vorsieht
+% wird hier gesondert geprüft, ob der Folienuntertitel leer ist.
+%    \begin{macrocode}
+\defbeamertemplate*{frametitle}{tudcd}[1][left]
+{%
+  \insertframetitle%
+  \insertframesubtitle%
+}
+%    \end{macrocode}
+%
+% Die Fußzeile wird aufgrund Ihrer speziellen Anforderungen mittels \dpkg{coffins} umgesetzt.
+% Dabei war die Einhaltung des zwölfteiligen Rasters bei dem Setzen der Fußzeile auschlaggebend für diese Entscheidung.
+%    \begin{macrocode}
+\defbeamertemplate*{footline}{tudcd}
+{%
+  \SetVerticalCoffin\tudcd@beamerouter@exclusionzone{\paperwidth}{%
+  \vspace{\dimexpr(\tudcd@beamerouter@topbottommargin+\tudcd@beamerouter@secondlogoheight+\tudcd@beamerouter@exlusionheight)}
+  }%
+  \SetHorizontalCoffin\tudcd@beamerouter@smalllogo{\rule{\tudcd@beamerouter@columnwidth}{\tudcd@beamerouter@smalllogoheight}}%
+  \JoinCoffins%
+  \tudcd@beamerouter@exclusionzone[l,b]%
+  \tudcd@beamerouter@smalllogo[l,b]%
+  (\tudcd@beamerouter@leftrightmargin,\tudcd@beamerouter@topbottommargin)%
+  \SetHorizontalCoffin\tudcd@beamerouter@smallfootline{\insertshorttitle~\textbullet~\insertshortauthor~\textbullet~\pagename~\insertpagenumber}%
+  \JoinCoffins%
+  \tudcd@beamerouter@exclusionzone[l,b]%
+  \tudcd@beamerouter@smallfootline[l,H]% Zur Grundlinie des Textes, nicht zur unteren Kante des Sargs
+  (\dimexpr(\tudcd@beamerouter@leftrightmargin+\tudcd@beamerouter@columnwidth+\tudcd@beamerouter@columnsep)\relax,\tudcd@beamerouter@topbottommargin)%
+  \SetVerticalCoffin\tudcd@beamerouter@secondlogo{\dimexpr(6\tudcd@beamerouter@columnwidth+5\tudcd@beamerouter@columnsep)}{\raggedleft Hier könnte ihr Logo stehen.}
+  \JoinCoffins%
+  \tudcd@beamerouter@exclusionzone[l,b]%
+  \tudcd@beamerouter@secondlogo[l,H]% Zur Grundlinie des Textes, nicht zur unteren Kante des Sargs
+  (\dimexpr(\tudcd@beamerouter@leftrightmargin+6\tudcd@beamerouter@columnwidth+6\tudcd@beamerouter@columnsep)\relax,\tudcd@beamerouter@topbottommargin)%
+  \TypesetCoffin\tudcd@beamerouter@exclusionzone%
+  \vskip0pt%
+}
+
+\setbeamertemplate{footline}[tudcd]
+\setbeamertemplate{headline}[tudcd]
+
+
+% Die Navigation Sidebar ist standardmäßig ausgeschaltet
+\defbeamertemplate*{sidebar left}{tudcd}
+{} % du auch?
+
+\defbeamertemplate*{sidebar right}{tudcd}
+{}
+
+\defbeamertemplate*{sidebar canvas left}{tudcd}
+{} % dur wirst gesetzt?
+
+\defbeamertemplate*{sidebar canvas right}{tudcd}
+{}
+
+\setbeamertemplate{sidebar left}[tudcd]
+\setbeamertemplate{sidebar right}[tudcd]
+\setbeamertemplate{sidebar canvas left}[tudcd]
+\setbeamertemplate{sidebar canvas right}[tudcd]
 
 
 
+\mode<all>
 %</beameroutertheme>
 %    \end{macrocode}
 %
@@ -142,6 +266,7 @@
 \ProcessOptionsBeamer\relax
 
 
+
 %</beamerinnertheme>
 %    \end{macrocode}
 %
@@ -150,7 +275,7 @@
 %    \begin{macrocode}
 %<*beamercolortheme>
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{beamercolorthemetudcd}[2025/08/30 v0.1 Simon Praetorius]
+\ProvidesPackage{beamercolorthemetudcd}[2025/08/30 v0.1 Beamer Color theme for the Corporate Design of the TU Dresden]
 
 %</beamercolortheme>
 %    \end{macrocode}
@@ -161,28 +286,28 @@
 %    \begin{macrocode}
 %<*beamerfonttheme>
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{beamerfontthemetudcd}[2025/08/30 v0.1 Beamer Color theme for the Corporate Design of the TU Dresden]
+\ProvidesPackage{beamerfontthemetudcd}[2025/08/30 v0.1 Beamer Font theme for the Corporate Design of the TU Dresden]
 
 \ProcessOptionsBeamer%
 
 \RequirePackage{tudcdfonts}
 
 % Global Definitions
-\setbeamerfont{normal text}{size*={20}{24},shape=\upshape}
-\setbeamerfont{structure}{size*={20}{24}}
-\setbeamerfont{alerted text}{size*={20}{24}}
-\setbeamerfont{tiny structure}{size*={20}{24}}
+\setbeamerfont{normal text}{size*={9}{11},shape=\upshape}
+\setbeamerfont{structure}{size*={9}{11}}
+\setbeamerfont{alerted text}{size*={9}{11}}
+\setbeamerfont{tiny structure}{size*={9}{11}}
 % Titleframe
-\setbeamerfont{title}{size*={40}{48},series=\bfseries}
-\setbeamerfont{subtitle}{size*={20}{24},shape=\upshape}
+\setbeamerfont{title}{size*={23}{19},series=\bfseries}
+\setbeamerfont{subtitle}{size*={9}{11},shape=\upshape}
 %
 % Elements of Frame
-\setbeamerfont{frametitle}{size*={34}{38},shape=\upshape}
-\setbeamerfont{framesubtitle}{size*={34}{38}}
+\setbeamerfont{frametitle}{size*={15}{17},shape=\upshape}
+\setbeamerfont{framesubtitle}{size*={15}{17}}
 %
 % Blocks?
-\setbeamerfont{block}{size*={20}{24}}
-\setbeamerfont{block title}{size*={20}{24<}}
+\setbeamerfont{block}{size*={9}{11}}
+\setbeamerfont{block title}{size*={9}{11}}
 \iffalse%
 \setbeamerfont{author}{}
 \setbeamerfont{institute}{}
