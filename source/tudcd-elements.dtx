@@ -191,9 +191,9 @@
 %    \begin{macrocode}
 \setkomafont{title}{\fontsize{44bp}{45bp}\selectfont\tudcd@elements@fontcolor\sffamily\bfseries}
 \setkomafont{subtitle}{\fontsize{25bp}{30bp}\selectfont\tudcd@elements@fontcolor\sffamily}
-\setkomafont{author}{\sffamily\tudcd@elements@fontcolor\Huge}
-\setkomafont{subject}{\normalfont\tudcd@elements@fontcolor\Huge}
-\setkomafont{date}{\tudcd@elements@fontcolor\Huge}
+\setkomafont{author}{\sffamily\tudcd@elements@fontcolor\LARGE}
+\setkomafont{subject}{\normalfont\tudcd@elements@fontcolor\LARGE}
+\setkomafont{date}{\tudcd@elements@fontcolor\LARGE}
 %    \end{macrocode}
 %
 % \begin{codedescribe}[
@@ -247,6 +247,8 @@
   \let\tudcd@elements@oldfontcolor\tudcd@elements@fontcolor
   \sethighlightcolor{\tudcd@titlefontcolor}
   \raggedright%
+
+  \vspace*{2\tudcd@logoheight}%
 
   {\usekomafont{titlehead}\noprotrusion\noindent\@titlehead\par}
 

@@ -173,6 +173,22 @@
 %    \end{macrocode}
 % \end{codedescribe}
 %
+%
+% \begin{codedescribe}[macro,new=0.5.4]{\tudcd@font@pt}
+% \begin{codesyntax}
+%    \tsmacro{\tudcd@font@pt}{}
+% \end{codesyntax}
+% Die Größenangabe der Schriftart in den Vorlagen in \enquote{pt} haben Korrespondieren zu keiner von
+% \LaTeX bereitgestellten Größen.
+% Der hier angegebene Wert wurde anhand der Größe des kleinen \enquote{x} in der Vorlage vom CD-Team ermittelt.
+% Dabei entspricht in der Vorlage des CD-Teams die Größe eines kleinen \enquote{x}s \qty{1.7}{\mm}.
+% Der Wert kann nicht genauer als $\qty{73014}{\texsp}$ sein, da \qty{1}{\texsp} die kleinste Einheit von \TeX ist.
+%    \begin{macrocode}
+\newlength{\tudcd@font@pt}%
+\setlength{\tudcd@font@pt}{73014sp}%
+%    \end{macrocode}
+% \end{codedescribe}
+%
 % \begin{codedescribe}[option,new=0.5.2]{fontsize}
 % \begin{codesyntax}
 %    \tstuddocglobaloption{fontsize}
@@ -194,7 +210,7 @@
       \AddToHook{@tudcd/afterBaseClassLoaded}{
       \let\normalsize\@undefined
       \DeclareRobustCommand\normalsize{
-        \@setfontsize\normalsize{9bp}{12bp}%
+        \@setfontsize\normalsize{9\tudcd@font@pt}{12\tudcd@font@pt}%
         %\abovedisplayskip 9pt plus 2pt minus 5pt%
         %\abovedisplayshortskip 9pt plus 2pt minus 2pt%
         %\belowdisplayshortskip 9pt plus 3.5pt minus 3pt%
@@ -203,7 +219,7 @@
       }%
       \let\small\@undefined
       \DeclareRobustCommand\small{
-        \@setfontsize\small{8bp}{10bp}%
+        \@setfontsize\small{8\tudcd@font@pt}{10\tudcd@font@pt}%
         %\abovedisplayskip 9pt plus 2pt minus 5pt%
         %\abovedisplayshortskip 9pt plus 2pt minus 2pt%
         %\belowdisplayshortskip 9pt plus 3.5pt minus 3pt%
@@ -215,7 +231,7 @@
       }
       \let\footnotesize\@undefined
       \DeclareRobustCommand\footnotesize{%
-        \@setfontsize\footnotesize{7bp}{9bp}%
+        \@setfontsize\footnotesize{7\tudcd@font@pt}{9\tudcd@font@pt}%
         %\abovedisplayskip 6\p@ \@plus2\p@ \@minus4\p@
         %\abovedisplayshortskip \z@ \@plus\p@
         %\belowdisplayshortskip 3\p@ \@plus\p@ \@minus2\p@
@@ -231,21 +247,22 @@
       %    \itemsep4\p@ \@plus2\p@ \@minus\p@}
       %
       \let\scriptsize\@undefined
-      \DeclareRobustCommand\scriptsize{\@setfontsize\scriptsize{6bp}{7bp}}
+      \DeclareRobustCommand\scriptsize{\@setfontsize\scriptsize{6\tudcd@font@pt}{7\tudcd@font@pt}}
       \let\tiny\@undefined
-      \DeclareRobustCommand\tiny{\@setfontsize\tiny {5bp} {6bp}}
+      \DeclareRobustCommand\tiny{\@setfontsize\tiny {5\tudcd@font@pt} {6\tudcd@font@pt}}
       \let\large\@undefined
-      \DeclareRobustCommand\large{\@setfontsize\large {11bp}{15bp}}
+      \DeclareRobustCommand\large{\@setfontsize\large {11\tudcd@font@pt}{15\tudcd@font@pt}}
       \let\Large\@undefined
-      \DeclareRobustCommand\Large{\@setfontsize\Large {12bp}{15bp}}
+      \DeclareRobustCommand\Large{\@setfontsize\Large {12\tudcd@font@pt}{15\tudcd@font@pt}}
       \let\LARGE\@undefined
-      \DeclareRobustCommand\LARGE{\@setfontsize\LARGE {15bp}{18bp}}
+      \DeclareRobustCommand\LARGE{\@setfontsize\LARGE {15\tudcd@font@pt}{18\tudcd@font@pt}}
       \let\huge\@undefined
-      \DeclareRobustCommand\huge{\@setfontsize\huge {18bp}{22bp}}
+      \DeclareRobustCommand\huge{\@setfontsize\huge {18\tudcd@font@pt}{22\tudcd@font@pt}}
       \let\Huge\@undefined
-      \DeclareRobustCommand\Huge{\@setfontsize\Huge {22bp}{24bp}}
+      \DeclareRobustCommand\Huge{\@setfontsize\Huge {22\tudcd@font@pt}{24\tudcd@font@pt}}
     }
-    \PassOptionsToClass{fontsize=9bp}{\tudcd@baseclass}%
+    % Manual Fontsizesetting 9pt
+    \PassOptionsToClass{fontsize=657126sp}{\tudcd@baseclass}%
     }% cdfont
   }{
     \PassOptionsToClass{fontsize=\tudcd@font@fontsizesetting}{\tudcd@baseclass}%
@@ -254,9 +271,9 @@
   \typeout{Processed cdfont fontsize setting}
 
   \let\SubHIIgroesse\@undefined
-  \DeclareRobustCommand\SubHIIgroesse{\@setfontsize\SubHIIgroesse {11bp}{12bp}}
+  \DeclareRobustCommand\SubHIIgroesse{\@setfontsize\SubHIIgroesse {11\tudcd@font@pt}{12\tudcd@font@pt}}
   \let\ZitatGrossgroesse\@undefined
-  \DeclareRobustCommand\ZitatGrossgroesse{\@setfontsize\ZitatGrossgroesse {57bp}{60bp}}
+  \DeclareRobustCommand\ZitatGrossgroesse{\@setfontsize\ZitatGrossgroesse {57\tudcd@font@pt}{60\tudcd@font@pt}}
 }
 %    \end{macrocode}
 %
