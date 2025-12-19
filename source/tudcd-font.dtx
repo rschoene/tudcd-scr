@@ -189,14 +189,17 @@
 %    \end{macrocode}
 % \end{codedescribe}
 %
-% \begin{codedescribe}[option,new=0.5.2]{fontsize}
+% \begin{codedescribe}[option,new=0.5.2,update=0.5.4]{fontsize}
 % \begin{codesyntax}
-%    \tstuddocglobaloption{fontsize}
+%    \tstuddocglobaloption[cdfont,9pt,10pt,11pt,...]{fontsize}
 % \end{codesyntax}
-% Um die Schriftgrößen der \TUD{} einzustellen, wird der Schlüssel \doptionglobal{fontsize} von \KOMAScript abgefangen und überladen.
+% Um die Schriftgrößen der \TUD{} einzustellen, wird der Schlüssel \doptionglobal{fontsize} von \KOMAScript{} abgefangen und überladen.
 % Damit kann einerseits die Schriftgröße auf einen beliebigen Wert eingestellt werden, andererseits kann auf die Größen des CD
 % zugegriffen werden.
 % Um das Überladen der Option \doptionglobal{fontsize} zu ermöglichen, wird die Option als String Key verarbeitet.
+% \begin{description}
+%   \item[0.5.4] Anpassen der Schrifteinstellungen auf nicht-längenregisterwerte, damit \dpkg{microtype} die Schrifgröße versteht.
+% \end{description}
 %    \begin{macrocode}
 \newcommand\tudcd@font@fontsizesetting{cdfont}%
 \AddToHook{@tudcd/beforeOptionsProcessed}[fonts-fontsize-redirect]{
@@ -210,7 +213,8 @@
       \AddToHook{@tudcd/afterBaseClassLoaded}{
       \let\normalsize\@undefined
       \DeclareRobustCommand\normalsize{
-        \@setfontsize\normalsize{9\tudcd@font@pt}{12\tudcd@font@pt}%
+        %\@setfontsize\normalsize{9\tudcd@font@pt}{12\tudcd@font@pt}%
+        \@setfontsize\normalsize{657126sp}{876168sp}
         %\abovedisplayskip 9pt plus 2pt minus 5pt%
         %\abovedisplayshortskip 9pt plus 2pt minus 2pt%
         %\belowdisplayshortskip 9pt plus 3.5pt minus 3pt%
@@ -219,7 +223,8 @@
       }%
       \let\small\@undefined
       \DeclareRobustCommand\small{
-        \@setfontsize\small{8\tudcd@font@pt}{10\tudcd@font@pt}%
+        %\@setfontsize\small{8\tudcd@font@pt}{10\tudcd@font@pt}%
+        \@setfontsize\small{584112sp}{730140sp}
         %\abovedisplayskip 9pt plus 2pt minus 5pt%
         %\abovedisplayshortskip 9pt plus 2pt minus 2pt%
         %\belowdisplayshortskip 9pt plus 3.5pt minus 3pt%
@@ -231,7 +236,8 @@
       }
       \let\footnotesize\@undefined
       \DeclareRobustCommand\footnotesize{%
-        \@setfontsize\footnotesize{7\tudcd@font@pt}{9\tudcd@font@pt}%
+        %\@setfontsize\footnotesize{7\tudcd@font@pt}{9\tudcd@font@pt}%
+        \@setfontsize\footnotesize{511098sp}{657126sp}%
         %\abovedisplayskip 6\p@ \@plus2\p@ \@minus4\p@
         %\abovedisplayshortskip \z@ \@plus\p@
         %\belowdisplayshortskip 3\p@ \@plus\p@ \@minus2\p@
@@ -247,19 +253,19 @@
       %    \itemsep4\p@ \@plus2\p@ \@minus\p@}
       %
       \let\scriptsize\@undefined
-      \DeclareRobustCommand\scriptsize{\@setfontsize\scriptsize{6\tudcd@font@pt}{7\tudcd@font@pt}}
+      \DeclareRobustCommand\scriptsize{\@setfontsize\scriptsize{438084sp}{511098sp}}
       \let\tiny\@undefined
-      \DeclareRobustCommand\tiny{\@setfontsize\tiny {5\tudcd@font@pt} {6\tudcd@font@pt}}
+      \DeclareRobustCommand\tiny{\@setfontsize\tiny {365070sp} {438084sp}}
       \let\large\@undefined
-      \DeclareRobustCommand\large{\@setfontsize\large {11\tudcd@font@pt}{15\tudcd@font@pt}}
+      \DeclareRobustCommand\large{\@setfontsize\large {803154sp}{1095210sp}}
       \let\Large\@undefined
-      \DeclareRobustCommand\Large{\@setfontsize\Large {12\tudcd@font@pt}{15\tudcd@font@pt}}
+      \DeclareRobustCommand\Large{\@setfontsize\Large {876168sp}{1095210sp}}
       \let\LARGE\@undefined
-      \DeclareRobustCommand\LARGE{\@setfontsize\LARGE {15\tudcd@font@pt}{18\tudcd@font@pt}}
+      \DeclareRobustCommand\LARGE{\@setfontsize\LARGE {1095210sp}{1314252sp}}
       \let\huge\@undefined
-      \DeclareRobustCommand\huge{\@setfontsize\huge {18\tudcd@font@pt}{22\tudcd@font@pt}}
+      \DeclareRobustCommand\huge{\@setfontsize\huge {1314252sp}{1606308sp}}
       \let\Huge\@undefined
-      \DeclareRobustCommand\Huge{\@setfontsize\Huge {22\tudcd@font@pt}{24\tudcd@font@pt}}
+      \DeclareRobustCommand\Huge{\@setfontsize\Huge {1606308sp}{1752336sp}}
     }
     % Manual Fontsizesetting 9pt
     \PassOptionsToClass{fontsize=657126sp}{\tudcd@baseclass}%
