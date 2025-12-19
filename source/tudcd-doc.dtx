@@ -50,7 +50,15 @@
   \maketitle
   \tableofcontents
 
-  \DocInput{tudcd-doc.dtx}
+
+  \DocInput{tudcd-base.dtx}
+  \DocInput{tudcd-color.dtx}
+  \DocInput{tudcd-font.dtx}
+  \DocInput{tudcd-area.dtx}
+  \DocInput{tudcd-elements.dtx}
+  \DocInput{tudcd-specialpages.dtx}
+
+  \printbibliography%
 \end{document}
 %</dtx>
 % \fi
@@ -94,6 +102,7 @@
 \RequirePackage{siunitx}%
 \DeclareSIUnit{\texsp}{sp}
 \RequirePackage[style=numeric]{biblatex}
+
 \addbibresource{lit.bib}
 \selectcolormodel{rgb}
 %    \end{macrocode}
@@ -125,7 +134,7 @@
 % Die Hilfsmakros helfen bei der korrekten Darstellung von Makros, Paketen, Haken, Steckdosen und Steckern.
 %    \begin{macrocode}
 \newcommand{\dmacro}[1]{\tsobj[macro]{#1}}%
-\newcommand{\dpkg}[1]{\tsobj[pkg]{#1}}%
+\NewDocumentCommand{\dpkg}{o m}{\IfNoValueTF{#1}{\tsobj[pkg]{#2}~\cite{ctan-#2}}{\tsobj[pkg]{#2}#1}}%
 \newcommand{\dhook}[1]{\tsobj[hook]{#1}}%
 \newcommand{\dsocket}[1]{\tsobj[socket]{#1}}%
 \newcommand{\dplug}[1]{\tsobj[plug]{#1}}%
@@ -146,13 +155,13 @@
 % Für die Dokumentation von globalen Optionen (Klassenoptionen) wird für die Umgebung \denv{codesyntax}
 % eine Standarddokumentation erzeugt.
 %    \begin{macrocode}
-\newcommand{\tstuddocglobaloption}[1]{
-\tsobj[macro]{\documentclass}[\tsargs[option]{#1}]\tsargs[marg]{Klassenname}
+\newcommand{\tstuddocglobaloption}[2][]{
+\tsobj[macro]{\documentclass}[\tsobj[key]{#2}\IfArgIsEmpty{#1}{}{=\tsobj[option, meta or]{#1}}]\tsargs[marg]{Klassenname}
 }
 %    \end{macrocode}
 % \end{codedescribe}
 %
-
+%
 % \begin{codedescribe}[
 % macro,
 % new=0.5.1
