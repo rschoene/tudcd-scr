@@ -40,3 +40,5 @@ for file in *; do
     #echo "Status $status"
   fi
 done
+
+echo "Finished building all documentation."

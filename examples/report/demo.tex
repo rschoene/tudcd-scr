@@ -1,8 +1,8 @@
-\documentclass[oneside,useseriffont=false,fontsize=cdfont]{tudcdreprt}
+\documentclass[useseriffont=false,fontsize=cdfont]{tudcdreprt}
 \usepackage[T1]{fontenc}
 \usepackage[ngerman=ngerman-x-latest]{hyphsubst}
 
-\usepackage[english]{babel}
+\usepackage[ngerman]{babel}
 \usepackage[babel]{microtype}
 \babelprovide[hyphenrules=ngerman-x-latest]{ngerman}
 \usepackage{xcolor}
@@ -30,6 +30,17 @@
 %\usepackage{tudcdfonts}
 \usepackage{blindtext}
 
+
+\usepackage{tikz}
+\AddToHook{shipout/foreground}{
+\begin{tikzpicture}[remember picture,overlay]
+    \coordinate (top) at (current page.north west);
+    \coordinate (bottom) at (current page.south west);
+    \fill[magenta,opacity=0.4] (top) ++(15mm,-15mm) rectangle +(\paperwidth-15mm-10mm,-19.5mm);
+    \fill[magenta,opacity=0.2] (top) ++(15mm,-15mm-19.5mm) rectangle +(\paperwidth-15mm-10mm,-19.5mm);
+
+  \end{tikzpicture}
+}
 
 \makeatletter
 \newcommand\getfontsize{\f@size}%
