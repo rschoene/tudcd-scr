@@ -109,6 +109,27 @@
   left=8mm,
   right=8mm,
 }
+%    \end{macrocode}
+%
+%
+%
+%    \begin{macrocode}
+\newcommand{\defineparameter}[2][0]{%
+  \expandafter\def\csname insert#2\endcsname{#1}%
+  \expandafter\def\csname insertshort#2\endcsname{#1}%
+  \expandafter\NewDocumentCommand\csname #2\endcsname{O{##2} m}{%
+    \expandafter\def\csname insert#2\endcsname{##2}%
+    \expandafter\def\csname insertshort#2\endcsname{##1}%
+  }%
+}
+
+\defineparameter{group}
+\defineparameter{location}
+\defineparameter{context}
+%    \end{macrocode}
+%
+%
+%    \begin{macrocode}
 
 \usecolortheme{tudcd}
 \usefonttheme{tudcd}
@@ -188,9 +209,19 @@
 % Aus Gründen die zum Zeitpunkt des Schreibens unklar sind, wird immer 1pt zuviel angegeben. Daher wird dieser Punkt hierbei bereits abgezogen.
 %    \begin{macrocode}
 \defbeamertemplate*{headline}{tudcd}{\vspace{\tudcd@beamerouter@topbottommargin-1pt}}
-
-
-\defbeamertemplate*{headline}{tudcd/simple title}{\vspace{\tudcd@beamerouter@topbottommargin-1pt}}
+%    \end{macrocode}
+%
+% Für die Beamertemplate \dcode{headline} wird die zusätzliche Template \dcode{tudcd/simple title} deklariert,
+% welche das Logo im Kopf ausgibt.
+%
+%    \begin{macrocode}
+\defbeamertemplate*{headline}{tudcd/simple title}{
+\vspace*{\tudcd@beamerouter@topbottommargin}
+%
+\noindent%
+\hspace{\tudcd@beamerouter@leftrightmargin}%
+\resizebox*{!}{1.1\tudcd@beamerouter@logoheight}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_de.pdf}}}%
+}
 %    \end{macrocode}
 %
 % Die Beamertemplate \dcode{frametitle} setzt den Folientitel und Untertitel. Da das Corporate Design keinen Folienuntertitel vorsieht
@@ -198,8 +229,27 @@
 %    \begin{macrocode}
 \defbeamertemplate*{frametitle}{tudcd}[1][left]
 {%
-  \insertframetitle%
-  \insertframesubtitle%
+  \ifx\insertframetitle\empty%
+    \ifx\insertframesubtitle\empty% Beides Leer
+    %\vspace*{\tudcd@beamerouter@logoheight}%
+    \else% Untertitel ohne Titel
+    \vspace*{\dimexpr\tudcd@beamerouter@logoheight/3}%
+    \usebeamerfont{framesubtitle}\insertframesubtitle%
+    \fi%
+  \else% Titel ist nichtleer
+    \ifx\insertframesubtitle\empty%
+    \parbox[t][\tudcd@beamerouter@logoheight]{\textwidth}{%
+    \usebeamerfont{frametitle}\insertframetitle%
+    }%
+    \else%
+    \parbox[t]{\textwidth}{%
+    \usebeamerfont{frametitle}\insertframetitle\\%
+    \usebeamerfont{framesubtitle}\insertframesubtitle\par%
+    }%
+    \fi%
+  \fi%
+  \usebeamerfont* {normal text}%
+  \usebeamercolor*{normal text}%
 }
 %    \end{macrocode}
 %
@@ -240,7 +290,7 @@
 \SetVerticalCoffin\tudcd@beamerouter@exclusionzone{\paperwidth}{%
   \vspace{\dimexpr(\tudcd@beamerouter@topbottommargin+\tudcd@beamerouter@secondlogoheight+\tudcd@beamerouter@exlusionheight)}
   }%
-  \SetHorizontalCoffin\tudcd@beamerouter@smalllogo{\usebeamerfont{footline/simple title}\insertdate~\textbullet~Ort}%
+  \SetHorizontalCoffin\tudcd@beamerouter@smalllogo{\usebeamerfont{footline/simple title}\insertdate~\textbullet~\insertlocation}%
   \JoinCoffins%
   \tudcd@beamerouter@exclusionzone[l,b]%
   \tudcd@beamerouter@smalllogo[l,H]%
@@ -249,7 +299,7 @@
   \vskip0pt%
 }
 
-\setbeamertemplate{footline}[tudcd/simple title]
+\setbeamertemplate{footline}[tudcd]
 \setbeamertemplate{headline}[tudcd]
 
 % Die Navigation Sidebar ist standardmäßig ausgeschaltet
@@ -274,34 +324,71 @@
 %
 %    \begin{macrocode}
 
+\defbeamertemplate*{title page/authorline}{tudcd}{
+  \insertauthor~|~\insertgroup~|~\insertcontext%
+}
+
 \defbeamertemplate*{title page}{tudcd}{
-\resizebox*{!}{8.75mm}{\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_de.pdf}}%
 %
-\vfill
+\vspace{\tudcd@beamerouter@logoheight}
+%
+\vspace{\tudcd@beamerouter@logoheight}
 %
 \begin{beamercolorbox}{title page/fontcolor}
-\usebeamerfont{author/simple title}\insertauthor
+\usebeamerfont{author/simple title}\usebeamertemplate{title page/authorline}%
 \end{beamercolorbox}
 %
-\vfill
+\vspace{\baselineskip}
 %
 \begin{beamercolorbox}{title page/fontcolor}
 \usebeamerfont{title}\inserttitle%
 \end{beamercolorbox}
 %
-\bigskip
+\vspace{1\baselineskip}
 %
 \begin{beamercolorbox}{title page/fontcolor}
 \usebeamerfont{subtitle}\insertsubtitle%
 \end{beamercolorbox}
 %
+\vfill
+%
+\vspace*{0pt}
+}
+
+%    \end{macrocode}
+%
+% Da für den Titel Beamer-Templates umgeschalten werden müssen,
+% werden Nutzer von der Nutzung innerhalb einer \denv{frame} Umgebung abgehalten.
+%
+%    \begin{macrocode}
+
+\providecommand\maketitle{}
+\renewcommand\maketitle{%
+  \ifbeamer@inframe{%
+    \PackageError{beamerouterthemetud}{Cannot set page style.^^J
+      \space Use \string\maketitle \space outside of any frame, please.^^J
+      ^^J
+      \space Die Titelseite konnte nicht konfiguriert werden.^^J
+      \space Verwenden Sie bitte \string\maketitle \space außerhalb von Folien.
+    }%
+    {%
+      \space See the TUD beamer style examples for further information.
+      \space http://GitHub.com/tud-cd/tudcd-scr
+    }%
+    \titlepage%
+  }%
+  \else
+  {%
+    \setbeamertemplate{headline}[tudcd/simple title]%
+    \setbeamertemplate{footline}[tudcd/simple title]%
+    \frame{\titlepage}%
+  }%
 }
 
 % part page
 \mode<all>
 %</beameroutertheme>
 %    \end{macrocode}
-%
 % \subsection{Der innere Stil}
 %
 %    \begin{macrocode}
