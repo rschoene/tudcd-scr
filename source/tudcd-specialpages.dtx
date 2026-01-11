@@ -124,56 +124,59 @@
 % Das Makro \dmacro{\tudcd@typesetlogo} setzt das Logo in Abhängigkeit der Makros \dmacro{\iftudcd@logogerman},
 % \dmacro{\iftudcd@colormodelrgb} und \dmacro{\tudcd@logocolor}. Dabei muss die vertikale Höhe des Logos als Länge übergeben werden.
 % \dmacro{\tudcd@logocolor}.
-% Aus Kompatibilitätsgründen wird in \cite{graphicsBundle} empfohlen die Anweisung \dmacro{\includegraphics} ohne optionales Argument zu nutzen
+% Aus Kompatibilitätsgründen wird in \cite{graphicsBundle} empfohlen die Anweisung \dmacro{\includegraphics}
+% ohne optionales Argument zu nutzen.
+% Der \enquote{Trick} mit der \dmacro{raisebox} sorgt dafür, dass der Shape des Logos auf der Grundlinie ist.
+% Damit der Shape eine gewisse Größe $x$ hat, muss die Box $\qty{10}{\percent}$ größer als $x$ sein.
 %    \begin{macrocode}
-\newcommand\tudcd@typesetlogo[1]{
-  \tudcd@switchcase{string}{\tudcd@logocolor}{%
+\newcommand\tudcd@typesetlogo[1]{%
+\noindent\tudcd@switchcase{string}{\tudcd@logocolor}{%
     {blue}{%
-  \iftudcd@logogerman
+  \iftudcd@logogerman%
     \iftudcd@colormodelrgb%
-\resizebox*{!}{#1}{\noindent\includegraphics{logo/TUD-Logo_RGB_horizontal_blau_de}}
-    \else % colormodelrgb
-\resizebox*{!}{#1}{\noindent\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_de}}
-    \fi % colormodelrgb
-  \else % logogerman
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_RGB_horizontal_blau_de}}}%
+    \else% colormodelrgb
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_de}}}%
+    \fi% colormodelrgb
+  \else% logogerman
     \iftudcd@colormodelrgb%
-\resizebox*{!}{#1}{\noindent\includegraphics{logo/TUD-Logo_RGB_horizontal_blau_en}}
-    \else % colormodelrgb
-\resizebox*{!}{#1}{\noindent\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_en}}
-    \fi % colormodelrgb
-  \fi % logogerman
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_RGB_horizontal_blau_en}}}%
+    \else% colormodelrgb
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_en}}}%
+    \fi% colormodelrgb
+  \fi% logogerman
     }%
     {white}{%
-\iftudcd@logogerman
+\iftudcd@logogerman%
     \iftudcd@colormodelrgb%
-\resizebox*{!}{#1}{\noindent\includegraphics{logo/TUD-Logo_RGB_horizontal_weiss_de}}
-    \else % colormodelrgb
-\resizebox*{!}{#1}{\noindent\includegraphics{logo/TUD-Logo_CMYK_horizontal_weiss_de}}
-    \fi % colormodelrgb
-  \else % logogerman
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_RGB_horizontal_weiss_de}}}%
+    \else% colormodelrgb
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_weiss_de}}}%
+    \fi% colormodelrgb
+  \else% logogerman
     \iftudcd@colormodelrgb%
-\resizebox*{!}{#1}{\noindent\includegraphics{logo/TUD-Logo_RGB_horizontal_weiss_en}}
-    \else % colormodelrgb
-\resizebox*{!}{#1}{\noindent\includegraphics{logo/TUD-Logo_CMYK_horizontal_weiss_en}}
-    \fi % colormodelrgb
-  \fi % logogerman
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_RGB_horizontal_weiss_en}}}%
+    \else% colormodelrgb
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_weiss_en}}}%
+    \fi% colormodelrgb
+  \fi% logogerman
     }%
     {black}{%
-\iftudcd@logogerman
+\iftudcd@logogerman%
     \iftudcd@colormodelrgb%
-\resizebox*{!}{#1}{\noindent\includegraphics{logo/TUD-Logo_RGB_horizontal_schwarz_de}}
-    \else % colormodelrgb
-\resizebox*{!}{#1}{\noindent\includegraphics{logo/TUD-Logo_CMYK_horizontal_schwarz_de}}
-    \fi % colormodelrgb
-  \else % logogerman
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_RGB_horizontal_schwarz_de}}}%
+    \else% colormodelrgb
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_schwarz_de}}}%
+    \fi% colormodelrgb
+  \else% logogerman
     \iftudcd@colormodelrgb%
-\resizebox*{!}{#1}{\noindent\includegraphics{logo/TUD-Logo_RGB_horizontal_schwarz_en}}
-    \else % colormodelrgb
-\resizebox*{!}{#1}{\noindent\includegraphics{logo/TUD-Logo_CMYK_horizontal_schwarz_en}}
-    \fi % colormodelrgb
-  \fi % logogerman
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_RGB_horizontal_schwarz_en}}}%
+    \else% colormodelrgb
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_schwarz_en}}}%
+    \fi% colormodelrgb
+  \fi% logogerman
     }%
-  }{\ClassError{\tudcd@currentclass}{Invalid logo color '\tudcd@logocolor' option given!}{}}
+  }{\ClassError{\tudcd@currentclass}{Invalid logo color '\tudcd@logocolor' option given!}{}}%
 }%
 %    \end{macrocode}
 % \end{codedescribe}
@@ -256,8 +259,8 @@
 %    \begin{macrocode}
   \DeclareLayer[
     align=tl,
-    area={\tudcd@innermargin-2.3pt}{\tudcd@innermargin-0.5pt}{\textwidth}{2\tudcd@logoheight},
-    contents={\noindent\tudcd@typesetlogo{0.946\tudcd@logoheight}},
+    area={\tudcd@innermargin}{\tudcd@innermargin}{\textwidth}{2\tudcd@logoheight},
+    contents={\tudcd@typesetlogo{1.13\tudcd@logoheight}Test},
     foreground
   ]{tudcdpage.logo}
 %    \end{macrocode}
@@ -286,7 +289,7 @@
   \DeclareLayer[
     align=bl,
     area={\tudcd@innermargin+3\tudcd@gridcolumnsep+3\tudcd@gridcolumnwidth}{\paperheight-\tudcd@innermargin}{\tudcd@gridcolumnwidth}{\tudcd@secondlogoheight},
-    contents={\hfill\fontsize{7bp}{9bp}\selectfont\color{Brilliantblau} \url{https://tu-dresden.de}\hfill\raisebox{0.25\layerheight}{\qrcode[height=0.6667\layerheight]{https://tu-dresden.de}}},
+    contents={\hfill\fontsize{7\tudcd@font@pt}{9\tudcd@font@pt}\selectfont\color{Brilliantblau} \url{https://tu-dresden.de}\hfill\raisebox{0.25\layerheight}{\qrcode[height=0.6667\layerheight]{https://tu-dresden.de}}},
     foreground
   ]{tudcdpage.qrcode}
 %    \end{macrocode}
