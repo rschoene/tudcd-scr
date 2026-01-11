@@ -109,6 +109,13 @@
   left=8mm,
   right=8mm,
 }
+
+%    \end{macrocode}
+%
+%
+%
+%    \begin{macrocode}
+
 %    \end{macrocode}
 %
 %
@@ -126,6 +133,22 @@
 \defineparameter{group}
 \defineparameter{location}
 \defineparameter{context}
+%    \end{macrocode}
+%
+%
+%    \begin{macrocode}
+
+\ExplSyntaxOn%https://tex.stackexchange.com/a/171440
+\NewDocumentCommand{\tudcd@beamer@delimitlist}{ O{,~} m }
+ {
+  \seq_clear:N \l_tmpa_seq
+  \clist_map_inline:nn { #2 }
+   {
+    \tl_if_blank:oF { ##1 } { \seq_put_right:No \l_tmpa_seq { ##1 } }
+   }
+  \seq_use:Nn \l_tmpa_seq {#1}
+ }
+\ExplSyntaxOff
 %    \end{macrocode}
 %
 %
@@ -215,12 +238,14 @@
 % welche das Logo im Kopf ausgibt.
 %
 %    \begin{macrocode}
+\providecommand\tudcd@beamerouter@logofile{logo/TUD-Logo_RGB_horizontal_blau_de}
+
 \defbeamertemplate*{headline}{tudcd/simple title}{
 \vspace*{\tudcd@beamerouter@topbottommargin}
 %
 \noindent%
 \hspace{\tudcd@beamerouter@leftrightmargin}%
-\resizebox*{!}{1.1\tudcd@beamerouter@logoheight}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_de.pdf}}}%
+\resizebox*{!}{1.1\tudcd@beamerouter@logoheight}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{\tudcd@beamerouter@logofile}}}%
 }
 %    \end{macrocode}
 %
@@ -255,18 +280,21 @@
 %
 % Die Fußzeile wird aufgrund Ihrer speziellen Anforderungen mittels \dpkg{coffins} umgesetzt.
 % Dabei war die Einhaltung des zwölfteiligen Rasters bei dem Setzen der Fußzeile auschlaggebend für diese Entscheidung.
+% \todo{Anpassen bzw. Konfiguration der Fußzeile für andere Kombinationen als Titel, Vortragender, Seitenzahl}
 %    \begin{macrocode}
+
+
 \defbeamertemplate*{footline}{tudcd}
 {%
   \SetVerticalCoffin\tudcd@beamerouter@exclusionzone{\paperwidth}{%
   \vspace{\dimexpr(\tudcd@beamerouter@topbottommargin+\tudcd@beamerouter@secondlogoheight+\tudcd@beamerouter@exlusionheight)}
   }%
-  \SetHorizontalCoffin\tudcd@beamerouter@smalllogo{\rule{\tudcd@beamerouter@columnwidth}{\tudcd@beamerouter@smalllogoheight}}%
+  \SetHorizontalCoffin\tudcd@beamerouter@smalllogo{\includegraphics[height=\tudcd@beamerouter@smalllogoheight]{logo/TUD-Logo_RGB_kurz_blau}}%
   \JoinCoffins%
   \tudcd@beamerouter@exclusionzone[l,b]%
   \tudcd@beamerouter@smalllogo[l,b]%
   (\tudcd@beamerouter@leftrightmargin,\tudcd@beamerouter@topbottommargin)%
-  \SetHorizontalCoffin\tudcd@beamerouter@smallfootline{\usebeamercolor[fg]{footline}\usebeamerfont{footline}\insertshorttitle~\textbullet~\insertshortauthor~\textbullet~\pagename~\insertpagenumber}%
+  \SetHorizontalCoffin\tudcd@beamerouter@smallfootline{\usebeamercolor[fg]{footline}\usebeamerfont{footline}\insertshorttitle~\textbullet~\insertshortauthor~\textbullet~\pagename~\insertframenumber}%
   \JoinCoffins%
   \tudcd@beamerouter@exclusionzone[l,b]%
   \tudcd@beamerouter@smallfootline[l,H]% Zur Grundlinie des Textes, nicht zur unteren Kante des Sargs
@@ -324,11 +352,26 @@
 %
 %    \begin{macrocode}
 
-\defbeamertemplate*{title page/authorline}{tudcd}{
-  \insertauthor~|~\insertgroup~|~\insertcontext%
+\setbeamercolor{background canvas/title page}{bg=}
+
+\defbeamertemplate{title page/colormode}{white}{
+}[action]{
+  \setbeamercolor{background canvas/title page}{bg=}
+  \setbeamercolor{title page/fontcolor}{fg=Brilliantblau}
+  \renewcommand\tudcd@beamerouter@logofile{logo/TUD-Logo_RGB_horizontal_blau_de}
+}
+\defbeamertemplate{title page/colormode}{blue}{
+}[action]{
+  \setbeamercolor{background canvas/title page}{bg=Brilliantblau}
+  \setbeamercolor{title page/fontcolor}{fg=Weiss}
+  \renewcommand\tudcd@beamerouter@logofile{logo/TUD-Logo_RGB_horizontal_weiss_de}
 }
 
-\defbeamertemplate*{title page}{tudcd}{
+\defbeamertemplate*{title page/authorline}{tudcd}{%
+\tudcd@beamer@delimitlist[~|~]{\insertauthor,\insertgroup,\insertcontext}%
+}
+
+\defbeamertemplate*{title page}{tudcd/simple title}{
 %
 \vspace{\tudcd@beamerouter@logoheight}
 %
@@ -344,11 +387,12 @@
 \usebeamerfont{title}\inserttitle\par%
 \end{beamercolorbox}
 %
-\vspace{1\baselineskip}
+\vspace{\baselineskip}
 %
+\ifx\insertsubtitle\empty\else%
 \begin{beamercolorbox}{title page/fontcolor}
 \usebeamerfont{subtitle}\insertsubtitle%
-\end{beamercolorbox}
+\end{beamercolorbox}\fi%
 %
 \vfill
 %
@@ -358,10 +402,9 @@
 %    \end{macrocode}
 %
 % Da für den Titel Beamer-Templates umgeschalten werden müssen,
-% werden Nutzer von der Nutzung innerhalb einer \denv{frame} Umgebung abgehalten.
+% werden Nutzer von der Nutzung innerhalb einer \denv{frame} Umgebung abgehalten. ^^X https://www.desmos.com/geometry/olumx2rp7o
 %
 %    \begin{macrocode}
-
 \providecommand\maketitle{}
 \renewcommand\maketitle{%
   \ifbeamer@inframe{%
@@ -379,9 +422,12 @@
   }%
   \else
   {%
+  %\usebeamertemplate{title page/color mode}
+  \setbeamercolor{background canvas}{parent=background canvas/title page}
     \setbeamertemplate{headline}[tudcd/simple title]%
     \setbeamertemplate{footline}[tudcd/simple title]%
     \frame{\titlepage}%
+    \setbeamercolor{background canvas}{bg=}
   }%
 }
 
@@ -418,7 +464,8 @@
 \setbeamercolor{footline}{fg=Brilliantblau}
 \setbeamercolor{frametitle}{fg=Schwarz}
 \setbeamercolor{framesubtitle}{fg=Grau80}
-
+\setbeamercolor{caption}{fg=Grau100}
+\setbeamercolor{caption name}{fg=Grau100}
 %</beamercolortheme>
 %    \end{macrocode}
 %
@@ -435,7 +482,7 @@
 \RequirePackage{tudcdfonts}
 
 % Global Definitions
-\setbeamerfont{normal text}{size*={9\tudcd@font@pt}{11\tudcd@font@pt},shape=\upshape}
+\setbeamerfont{normal text}{size*={9\tudcd@font@pt}{11\tudcd@font@pt},shape=\upshape,series=\cdslseries}
 \setbeamerfont{structure}{size*={9\tudcd@font@pt}{11\tudcd@font@pt}}
 \setbeamerfont{alerted text}{size*={9\tudcd@font@pt}{11\tudcd@font@pt}}
 \setbeamerfont{tiny structure}{size*={9\tudcd@font@pt}{11\tudcd@font@pt}}
@@ -443,7 +490,7 @@
 \setbeamerfont{title}{size*={19\tudcd@font@pt}{21\tudcd@font@pt},series=\bfseries}
 \setbeamerfont{subtitle}{size*={9\tudcd@font@pt}{11\tudcd@font@pt},shape=\upshape}
 %
-\setbeamerfont{author/simple title}{size*={9\tudcd@font@pt}{11\tudcd@font@pt},shape=\upshape}
+\setbeamerfont{author/simple title}{size*={9\tudcd@font@pt}{11\tudcd@font@pt},series=\cdmseries}
 % Elements of Frame
 \setbeamerfont{frametitle}{size*={15\tudcd@font@pt}{17\tudcd@font@pt},shape=\upshape}
 \setbeamerfont{framesubtitle}{size*={15\tudcd@font@pt}{17\tudcd@font@pt}}
@@ -454,6 +501,8 @@
 % Blocks?
 \setbeamerfont{block}{size*={9\tudcd@font@pt}{11\tudcd@font@pt}}
 \setbeamerfont{block title}{size*={9\tudcd@font@pt}{11\tudcd@font@pt}}
+% Captions
+\setbeamerfont{caption}{size*={5.5\tudcd@font@pt}{7\tudcd@font@pt},series=\cdslseries,shape=\rmfamily}
 \iffalse%
 \setbeamerfont{author}{}
 \setbeamerfont{institute}{}

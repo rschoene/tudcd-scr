@@ -14,6 +14,7 @@
 \pgfpagesuselayout{2 on 1}[a4paper,border shrink=5mm]
 \fi
 \usepackage{tikz}
+\iffalse
 \AddToHook{shipout/foreground}{
 \begin{tikzpicture}[remember picture,overlay]
     \coordinate (top) at (current page.north west);
@@ -35,22 +36,25 @@
     %\node[red,scale=10,opacity=0.2] at (current page.north west) {Draft};
   \end{tikzpicture}
 }
-\makeatletter
-\newcommand\getfontsize{\f@size}%
-\makeatother
+\fi
 
-
-\title[Ich bin der Kurztitel]{Titel -- Inhalt des Vortrags,
-Noto Sans Semibold 19 pt,
-Zeilenanstand 23 pt}
+\title[Kurztitel der Präsentation]{Titel -- Inhalt des Vortrags, \\
+Noto Sans Semibold 19 pt, \\
+Zeilenanstand 21 pt}
+\author[Vortragende]{Yoshi Diepelt, Paul Erdős}
 %\struktureinheit{}
-%\gruppe{}
-\author{Yoshi Diepelt}
-%\place{}
-\date{ggf. Datum und Ort des Vortrags}
+\group[Short Group]{Group}
+\context[Short Context]{Context}
+\location[Short Location]{Tokyo}
+\date{\today}
 %
+\setbeamertemplate{title page/colormode}[blue]
 
 \begin{document}
+
+\maketitle
+
+\setbeamertemplate{title page/colormode}[white]
 
 \maketitle
 
@@ -74,16 +78,6 @@ Zeilenanstand 23 pt}
         \int_a^b f(x)\,dx = F(b) - F(a).
       \]
   \end{itemize}
-
-  \the\paperheight%
-
-  \the\paperwidth%
-
-  Footheight \the\footheight%
-
-  Test
-
-  TEst
 \end{frame}
 
 \begin{frame}
@@ -97,19 +91,23 @@ Zeilenanstand 23 pt}
     \item Drittes enumerated item
   \end{enumerate}
 
+  \rule{\textwidth}{1em}
+
   %\blankfootnote{Eine Fußnote ohne Nummerierung}
 \end{frame}
 
-\begin{frame}{Ein Frame mit Boxen}
+\begin{frame}
+  \frametitle{Ein Frame mit Boxen}
   \lipsum[1][5-6]
 
   \onslide<2->{%
-  \begin{columns}[t]
+  \begin{columns}[t,onlytextwidth]
     \begin{column}{.5\textwidth-1em}
     \begin{block}{Blocktitel Links}
       \lipsum[1][7-8]
     \end{block}
-    \end{column}\begin{column}{.5\textwidth-1em}
+    \end{column}
+    \begin{column}{.5\textwidth-1em}
     \begin{block}{Rechts}
       \lipsum[1][9-10]
     \end{block}
@@ -151,12 +149,35 @@ Zeilenanstand 23 pt}
 
 \begin{frame}
 
-  \includegraphics{example-image-a}
+  \begin{columns}[t]
+    \begin{column}{0.4\textwidth}
+  \begin{figure}
+\includegraphics[height=0.4\textheight]{example-image-a}
+\caption{This caption is placed below the figure.}
+\end{figure}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+  \begin{figure}
+\includegraphics[height=0.4\textheight]{example-image-b}
+\caption{This caption is placed below the figure.}
+\end{figure}
+    \end{column}
+  \end{columns}
+
 
 \end{frame}
 
 \begin{frame}
-
+\only<1>{\textcdul{Ich bin ein Test Ultra Light}}%
+\only<2>{\textcdel{Ich bin ein Test Extra Light}}%
+\only<3>{\textcdl{Ich bin ein Test Light}}%
+\only<4>{\textcdsl{Ich bin ein Test Semi Light}}%
+\only<5>{\fontseries{medium}\selectfont Ich bin ein Test Medium voll\par}
+\only<6>{\textcdm{Ich bin ein Test Medium}}%
+\only<7>{\textcdsb{Ich bin ein Test Semi bold}}%
+\only<8>{\textcdb{Ich bin ein Test Bold}}%
+\only<9>{\textcdeb{Ich bin ein Test Extra Bold}}%
+\only<10>{\textcdub{Ich bin ein Test Ultra Bold}}%
 \end{frame}
 
 \begin{frame}

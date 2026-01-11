@@ -37,7 +37,7 @@
   % #1 (optional, default pt), #2 = length
   \fpeval{(#2)/(1#1)}%
 }
-\iffalse
+%\iffalse
 \AddToHook{shipout/foreground}{
 \begin{tikzpicture}[remember picture,overlay]
     \coordinate (top) at (current page.north west);
@@ -52,7 +52,7 @@
 }
 \end{tikzpicture}
 }
-\fi
+%\fi
 
 \title{Eine Schablonen Datei}
 \subtitle{Welche die einzelnen Eigenschaften hoffentlich hat, die sie brauch}

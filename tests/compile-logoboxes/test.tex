@@ -1,0 +1,65 @@
+% arara: pdflatex
+% arara: pdflatex
+
+\documentclass{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+\usepackage{graphics}
+
+\setlength\fboxsep{0pt}
+
+\ExplSyntaxOn%
+\newcommand\typesetpdf[2]{
+\dim_set:Nn \l_tmpa_dim {#1*11/10}
+\resizebox*{!}{\dim_use:N\l_tmpa_dim}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{#2}}}
+}
+\ExplSyntaxOff%
+
+\begin{document}
+
+\the\fboxrule\relax
+
+65x22 mm
+
+22/20
+
+11/10 \the\dimexpr (20mm*(11/10))\relax
+
+xx\rule{0.3\textwidth}{20mm}xx
+\resizebox*{!}{\dimexpr (20mm* 11/10 )}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_de}}}xx
+
+xx\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_de}}xx Test
+
+\rule{0.3\textwidth}{19mm}%
+\typesetpdf{19mm}{logo/TUD-Logo_CMYK_horizontal_blau_de}
+
+
+\fbox{xx\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_de}}xx}
+
+\fbox{\typesetpdf{20mm}{logo/TUD-Logo_CMYK_horizontal_blau_de}}
+
+\fbox{\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_en}}
+
+\fbox{\includegraphics{logo/TUD-Logo_CMYK_horizontal_weiss_de}}
+
+\fbox{\includegraphics{logo/TUD-Logo_CMYK_horizontal_weiss_en}}
+
+\fbox{\includegraphics{logo/TUD-Logo_CMYK_horizontal_schwarz_de}}
+
+\fbox{\includegraphics{logo/TUD-Logo_CMYK_horizontal_schwarz_en}}
+
+\fbox{\includegraphics{logo/TUD-Logo_RGB_horizontal_blau_de}}
+
+\fbox{\includegraphics{logo/TUD-Logo_RGB_horizontal_blau_en}}
+
+\fbox{\includegraphics{logo/TUD-Logo_RGB_horizontal_weiss_de}}
+
+\fbox{\includegraphics{logo/TUD-Logo_RGB_horizontal_weiss_en}}
+
+\fbox{\includegraphics{logo/TUD-Logo_RGB_horizontal_schwarz_de}}
+
+\fbox{\includegraphics{logo/TUD-Logo_RGB_horizontal_schwarz_en}}
+
+\end{document}
