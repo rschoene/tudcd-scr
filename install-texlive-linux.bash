@@ -24,15 +24,23 @@ fi
 if [[ ! -d "$TEXMF/tex/latex/tudcd/logo" ]]; then
   mkdir -p "$TEXMF/tex/latex/tudcd/logo"
 fi
+if [[ ! -d "$TEXMF/tex/latex/beamerthemetudcd" ]]; then
+  mkdir -p "$TEXMF/tex/latex/beamerthemetudcd"
+fi
 
 
 for file in *; do
   fileextension=${file##*.}
   filename=${file%.*}
+  filenameprefix=${filename:0:6}
   #mv "$TEXMF/tex/latex/tudcd"
-  if [[ -f $file && ($fileextension == "cls" || $fileextension == "sty") ]]; then
+  if [[ -f $file && ($fileextension == "cls" || $fileextension == "sty") && $filenameprefix != "beamer" ]]; then
     #echo $file
     mv -f $file "$TEXMF/tex/latex/tudcd/$file"
+  fi
+  if [[ -f $file && ($fileextension == "cls" || $fileextension == "sty") && $filenameprefix == "beamer" ]]; then
+    #echo $file
+    mv -f $file "$TEXMF/tex/latex/beamerthemetudcd/$file"
   fi
 # Verschieben der Dateien
 done
