@@ -255,13 +255,13 @@
 %    \begin{macrocode}
 \AddToHook{@tudcd/afterLateOptionsProcessed}[pagearea-pagesetting]{
 \tudcd@switchcase{string}{\tudcd@paperselection}
-{
-  {4}{
-    \setlength\tudcd@outermargin{15mm}%
+{%
+  {4}{%
+    \setlength\tudcd@innermargin{15mm}%
     \iftudcd@postermode
-      \setlength\tudcd@innermargin{15mm}%
+      \setlength\tudcd@outermargin{15mm}%
     \else
-      \setlength\tudcd@innermargin{10mm}%
+      \setlength\tudcd@outermargin{10mm}%
     \fi
     \setlength\tudcd@logoheight{19.0mm}%
     \setlength\tudcd@secondlogoheight{15mm}%
