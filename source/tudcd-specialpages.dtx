@@ -259,7 +259,7 @@
 %    \begin{macrocode}
   \DeclareLayer[
     align=tl,
-    area={\tudcd@innermargin}{\tudcd@innermargin}{\textwidth}{2\tudcd@logoheight},
+    area={\tudcd@innermargin}{\tudcd@topmargin}{\textwidth}{2\tudcd@logoheight},
     contents={\tudcd@typesetlogo{1.13\tudcd@logoheight}},
     foreground
   ]{tudcdpage.logo}
@@ -409,7 +409,7 @@
   \newgeometry{%
     inner=\tudcd@innermargin,%
     outer=\tudcd@outermargin,%
-    top=\tudcd@innermargin,%
+    top=\tudcd@topmargin,%
     bottom=\tudcd@bottommargin%
   }%
   \setlength{\tudcd@gridcolumnwidth}{\tudcd@getgridcolumnwidth{4}}%
@@ -458,7 +458,7 @@
   \newgeometry{%
     inner=\tudcd@innermargin,%
     outer=\tudcd@outermargin,%
-    top=\tudcd@outermargin,% Oberer Abstand + Schutzraum
+    top=\tudcd@topmargin,% Oberer Abstand + Schutzraum
     bottom=\tudcd@bottommargin%
   }%
   \setlength{\tudcd@gridcolumnwidth}{\tudcd@getgridcolumnwidth{4}}%

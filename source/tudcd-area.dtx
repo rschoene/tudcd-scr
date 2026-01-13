@@ -96,6 +96,7 @@
 %    \begin{macrocode}
 \newlength\tudcd@outermargin%
 \newlength\tudcd@innermargin%
+\newlength\tudcd@topmargin%
 \newlength\tudcd@logoheight%
 \newlength\tudcd@secondlogoheight%
 \newlength\tudcd@exclusionheight%
@@ -177,7 +178,7 @@
     paper=\tudcd@selectedpaperformat,%
     inner=\tudcd@innermargin,%
     outer=\tudcd@outermargin,%
-    top=\tudcd@outermargin,%
+    top=\tudcd@topmargin,%
     bottom=\tudcd@bottommargin%
   }
   \else% false
@@ -185,7 +186,7 @@
     paper=\tudcd@selectedpaperformat,%
     inner=\tudcd@innermargin,%
     outer=\tudcd@outermargin,%
-    top=\tudcd@outermargin,%
+    top=\tudcd@topmargin,%
     bottom=\tudcd@bottommargin%
   }
   \fi%
@@ -263,6 +264,7 @@
     \else
       \setlength\tudcd@outermargin{10mm}%
     \fi
+    \setlength\tudcd@topmargin{15mm}
     \setlength\tudcd@logoheight{19.0mm}%
     \setlength\tudcd@secondlogoheight{15mm}%
     \setlength\tudcd@exclusionheight{5mm}%
@@ -289,6 +291,7 @@
     \else
       \setlength\tudcd@innermargin{15mm}%
     \fi
+    \setlength\tudcd@topmargin{15mm}
     \setlength\tudcd@logoheight{28.2mm}%
     \setlength\tudcd@secondlogoheight{21.21mm}%
     \setlength\tudcd@exclusionheight{7.5mm}%
@@ -309,6 +312,7 @@
     \else
       \setlength\tudcd@innermargin{21.2mm}%
     \fi
+    \setlength\tudcd@topmargin{21.2mm}%
     \setlength\tudcd@logoheight{39.88mm}%
     \setlength\tudcd@secondlogoheight{30mm}%
     \setlength\tudcd@exclusionheight{10.5mm}%
@@ -329,6 +333,7 @@
     \else
       \setlength\tudcd@innermargin{30mm}%
     \fi
+    \setlength\tudcd@topmargin{30mm}%
     \setlength\tudcd@logoheight{56.4mm}%
     \setlength\tudcd@secondlogoheight{42.43mm}%
     \setlength\tudcd@exclusionheight{14.85mm}%
@@ -349,6 +354,7 @@
     \else
       \setlength\tudcd@innermargin{42.4mm}%
     \fi
+    \setlength\tudcd@topmargin{42.4mm}%
     \setlength\tudcd@logoheight{79.76mm}%
     \setlength\tudcd@secondlogoheight{60mm}%
     \setlength\tudcd@exclusionheight{21mm}%
