@@ -152,6 +152,21 @@
    }
   \seq_use:Nn \l_tmpa_seq {#1}
  }
+% Hier machen wir eine Kommaliste für Dateinamen für die Zweitlogos
+\clist_new:N\g_zweitlogos_dateipfade_clist%
+\NewDocumentCommand\secondlogos{m}{
+  \clist_gset:Nn\g_zweitlogos_dateipfade_clist{#1}%
+}
+\NewDocumentCommand\tudcd@beamer@typesetsecondlogos{}{
+  % Tokenliste für ausgabe
+  \tl_gset:Nn\g_tmpa_tl{}%
+  %\clist_if_empty:NF\g_zweitlogos_dateipfade_clist{
+  \clist_map_inline:Nn\g_zweitlogos_dateipfade_clist{
+    \tl_gput_right:Nn\g_tmpa_tl{~\includegraphics[height=\tudcd@beamerouter@secondlogoheight]{##1}}
+  }
+  %}
+  \tl_use:N\g_tmpa_tl%
+}
 \ExplSyntaxOff
 %    \end{macrocode}
 %
@@ -306,7 +321,7 @@
   \tudcd@beamerouter@exclusionzone[l,b]%
   \tudcd@beamerouter@smallfootline[l,H]% Zur Grundlinie des Textes, nicht zur unteren Kante des Sargs
   (\dimexpr(\tudcd@beamerouter@leftrightmargin+\tudcd@beamerouter@columnwidth+\tudcd@beamerouter@columnsep)\relax,\tudcd@beamerouter@topbottommargin)%
-  \SetVerticalCoffin\tudcd@beamerouter@secondlogo{\dimexpr(6\tudcd@beamerouter@columnwidth+5\tudcd@beamerouter@columnsep)}{\raggedleft Hier könnte ihr Logo stehen.}
+  \SetVerticalCoffin\tudcd@beamerouter@secondlogo{\dimexpr(6\tudcd@beamerouter@columnwidth+5\tudcd@beamerouter@columnsep)}{\raggedleft \tudcd@beamer@typesetsecondlogos}
   \JoinCoffins%
   \tudcd@beamerouter@exclusionzone[l,b]%
   \tudcd@beamerouter@secondlogo[l,H]% Zur Grundlinie des Textes, nicht zur unteren Kante des Sargs
@@ -330,6 +345,11 @@
   \tudcd@beamerouter@exclusionzone[l,b]%
   \tudcd@beamerouter@smalllogo[l,H]%
   (\tudcd@beamerouter@leftrightmargin,\tudcd@beamerouter@topbottommargin)%
+  \SetVerticalCoffin\tudcd@beamerouter@secondlogo{\dimexpr(6\tudcd@beamerouter@columnwidth+5\tudcd@beamerouter@columnsep)}{\raggedleft \tudcd@beamer@typesetsecondlogos}
+  \JoinCoffins%
+  \tudcd@beamerouter@exclusionzone[l,b]%
+  \tudcd@beamerouter@secondlogo[l,H]% Zur Grundlinie des Textes, nicht zur unteren Kante des Sargs
+  (\dimexpr(\tudcd@beamerouter@leftrightmargin+6\tudcd@beamerouter@columnwidth+6\tudcd@beamerouter@columnsep)\relax,\tudcd@beamerouter@topbottommargin)%
   \TypesetCoffin\tudcd@beamerouter@exclusionzone%
   \vskip0pt%
 }
