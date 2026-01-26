@@ -32,9 +32,9 @@ testfiledir = "tests"
 -- Ich habe Literaturverweise, diese müssen mit in das Verzeichnis für die Dokumentation kopiert werden.
 typesetsuppfiles = { "*.bib" }
 -- Dies sind Dateien welche vor der eigentlichen Dokumentation gesetzt werden müssen.
-typesetdemofiles = {  }
+typesetdemofiles = { "article.tex" }
 -- Diese beiden Dateien ergeben die Dokumentation.
-typesetfiles = { "tudcd-doc.dtx", "handbook.tex" }
+typesetfiles = { "tudcd-doc.dtx", "tudcd-common.dtx" ,"handbook.tex", "article.tex" }
 -- Automatisches Updaten der Version und Datum
 tagfiles = { "tudcd-common.dtx" }
 local mydate = os.date("!%Y-%m-%d")
