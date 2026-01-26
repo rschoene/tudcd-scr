@@ -319,50 +319,178 @@
 %</class>
 %    \end{macrocode}
 %
-% \subsection{Verarbeiten der Optionen}
+% \subsubsection{Einstellungen für das Logo}
+%
+% Ein gemeinsames Merkmal aller Klassen und Pakete ist die Wahl des Logos.
+% Dieses hat Varianten in
+% \begin{itemize}
+%   \item den Farben blau, weiß und schwarz,
+%   \item den Farbmodellen cmyk und rgb, sowie
+%   \item den Sprachen deutsch und english.
+% \end{itemize}
+% Insgesamt ergeben sich damit 12 Varianten.
+%
+% Die Konfiguration wird umgesetzt mit einfachen Optionen.
+% Die jeweilige Auswahl wird in Stringvariablen gespeichert
 %
 %    \begin{macrocode}
-%<optionloading&peri>\ProcessKeyOptions[tudcd]
+%<*prelim-declaration>
+\str_new:N \l_@@_logolang_str
+\str_new:N \l_@@_logomodel_str
+\str_new:N \l_@@_logocolor_str
+%</prelim-declaration>
 %    \end{macrocode}
 %
-% \iffalse
-%<*nothingOfNote>
-\str_new:N \l_module_logolang_str
-\str_new:N \l_module_logomodel_str
-\str_new:N \l_module_logocolor_str
-
-\keys_define:nn { module }
-{
+% Anschließend werden die Optionen definiert und deklariert.
+%
+%    \begin{macrocode}
+%<*option&peri>
   logo .code:n =
   {
-    \keys_set:nn { module / logo }{ #1 }
+    \keys_set:nn { tudcd / logo }{ #1 }
   },
   logo/language .choices:nn =
   { de, en, auto }
   { \str_if_eq:nVTF { auto } { \l_keys_choice_str } {
       \hook_gput_next_code:nn{package/babel/after}{
-        \str_set:Ne { \l_module_logolang_str } { \BCPdata{main.language} }
+        \str_set:Ne \l_@@_logolang_str { \BCPdata{main.language} }
       }
       \hook_gput_next_code:nn{package/polyglossia/after}{
-        \str_set:Ne { \l_module_logolang_str } { \BCPdata{main.language} }
+        \str_set:Ne \l_@@_logolang_str { \BCPdata{main.language} }
       }
     }{
-       \str_set_eq:NN { \l_module_logolang_str } { \l_keys_choice_str }
+       \str_set_eq:NN \l_@@_logolang_str \l_keys_choice_str
     }
   },
   logo/language .default:n = { de },
   logo/colormodel .choices:nn =
   { cmyk, rgb }
   {
-    \str_set_eq:NN { \l_module_logomodel_str } { \l_keys_choice_str }
+    \str_set_eq:NN \l_@@_logomodel_str \l_keys_choice_str
   },
-  logo/colormodel .default:n = { cmyk },
+  logo/colormodel .default:n = { rgb },
   logo/color .choices:nn =
   { blue, white, black }
   {
-    \str_set_eq:NN { \l_module_logocolor_str } { \l_keys_choice_str }
+    \str_set_eq:NN \l_@@_logocolor_str \l_keys_choice_str
   },
-  logo/color .default:n = { blue }
+  logo/color .default:n = { blue },
+%</option&peri>
+%    \end{macrocode}
+%
+% Anschließend wird ein internes Makro deklariert, welches das Logo setzt, und dabei die richtige Datei auswählt.
+% Dieses wird nach verarbeiten der Optionen deklariert
+%    \begin{macrocode}
+%<*header&peri>
+%%
+\RequirePackage{graphicx}
+
+\msg_new:nnn{ tudcd/logoconfig }{ logolanguagerror }{ Illegal~string~'#1'~for~logolanguage!~This~error~should~not~appear,~please~report~an~issue~to~<https://github.com/tud-cd/tudcd-scr/issues>. }
+\msg_new:nnn{ tudcd/logoconfig }{ logomodelerror }{ Illegal~string~'#1'~for~logo~color~model!~This~error~should~not~appear,~please~report~an~issue~to~<https://github.com/tud-cd/tudcd-scr/issues>. }
+\msg_new:nnn{ tudcd/logoconfig }{ logocolorerror }{ Illegal~string~'#1'~for~logo~color!~This~error~should~not~appear,~please~report~an~issue~to~<https://github.com/tud-cd/tudcd-scr/issues>. }
+%%
+\cs_new:Nn \@@_typeset_logo:n
+{
+  \str_case:VnF\l_@@_logocolor_str{
+  { blue  }{
+    \str_case:VnF\l_@@_logolang_str{
+      {de}{
+        \str_case:VnF\l_@@_logomodel_str{
+          {cmyk}{
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_de}}}%
+          }
+          {rgb}{
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_RGB_horizontal_blau_de}}}%
+          }
+        }{% False Branch
+\msg_critical:nnV{tudcd/logoconfig}{logomodelerror}\l_@@_logomodel_str
+        }
+      }
+      {en}{
+        \str_case:VnF\l_@@_logomodel_str{
+          {cmyk}{
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_blau_en}}}%
+          }
+          {rgb}{
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_RGB_horizontal_blau_en}}}%
+          }
+        }{% False Branch
+\msg_critical:nnV{tudcd/logoconfig}{logomodelerror}\l_@@_logomodel_str
+        }
+      }
+    }{
+\msg_critical:nnV{tudcd/logoconfig}{logolanguagerror}\l_@@_logolang_str
+    }
+  }% BLUE ende
+  { white }{
+    \str_case:VnF\l_@@_logolang_str{
+      {de}{
+        \str_case:VnF\l_@@_logomodel_str{
+          {cmyk}{
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_weiss_de}}}%
+          }
+          {rgb}{
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_RGB_horizontal_weiss_de}}}%
+          }
+        }{% False Branch
+\msg_critical:nnV{tudcd/logoconfig}{logomodelerror}\l_@@_logomodel_str
+        }
+      }
+      {en}{
+        \str_case:VnF\l_@@_logomodel_str{
+          {cmyk}{
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_weiss_en}}}%
+          }
+          {rgb}{
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_RGB_horizontal_weiss_en}}}%
+          }
+        }{% False Branch
+\msg_critical:nnV{tudcd/logoconfig}{logomodelerror}\l_@@_logomodel_str
+        }
+      }
+    }{
+\msg_critical:nnV{tudcd/logoconfig}{logolanguagerror}\l_@@_logolang_str
+    }
+  }% Weiss ende
+  { black }{
+    \str_case:VnF\l_@@_logolang_str{
+      {de}{
+        \str_case:VnF\l_@@_logomodel_str{
+          {cmyk}{
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_schwarz_de}}}%
+          }
+          {rgb}{
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_RGB_horizontal_schwarz_de}}}%
+          }
+        }{% False Branch
+\msg_critical:nnV{tudcd/logoconfig}{logomodelerror}\l_@@_logomodel_str
+        }
+      }
+      {en}{
+        \str_case:VnF\l_@@_logomodel_str{
+          {cmyk}{
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_CMYK_horizontal_schwarz_en}}}%
+          }
+          {rgb}{
+\resizebox*{!}{#1}{\raisebox{-1.65mm}[20.0mm][2.0mm]{\includegraphics{logo/TUD-Logo_RGB_horizontal_schwarz_en}}}%
+          }
+        }{% False Branch
+\msg_critical:nnV{tudcd/logoconfig}{logomodelerror}\l_@@_logomodel_str
+        }
+      }
+    }{
+\msg_critical:nnV{tudcd/logoconfig}{logolanguagerror}\l_@@_logolang_str
+    }
+  }
+  }{
+\msg_critical:nnV{tudcd/logoconfig}{logocolorerror}\l_@@_logocolor_str
+  }
 }
-%</nothingOfNote>
-% \fi
+%</header&peri>
+%    \end{macrocode}
+%
+% \subsection{Verarbeiten der Optionen}
+%
+%    \begin{macrocode}
+%<optionloading&peri>\ProcessKeyOptions[tudcd]
+%    \end{macrocode}
