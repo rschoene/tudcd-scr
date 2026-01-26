@@ -54,12 +54,24 @@
 %</dtx>
 % \fi
 %
+% \iffalse Damit in den Dateien Kommentare hinterlassen werden, sind diese Guards hier nochmals definiert.
+%<identification&pre>%% START IDENTIFICATION
+%<option&pre>%% START OPTIONS
+%<optionloading&pre>%% START OPTIONLOADING
+%<header&pre>%% START HEADER
+%<baseclassloading&pre>%% START BASECLASSLOADING
+%<body&pre>%% START BODY
+% \fi
+%
 % \selectlanguage{ngerman}
 %
 % \section{\texttt{tudcd-common}: Gemeinsame Einstellungen für alle Klassen}
 %
 % \subsection{ Vorbemerkung }
 %
+% \iffalse
+%<*dtx>
+% \fi
 % Gemäß \dpkg{clsguide} besteht jede Klasse oder Paket in \LaTeX{} aus
 % \begin{enumerate}
 %   \item Identifikation,
@@ -68,36 +80,53 @@
 %   \item weiteren Deklarationen.
 % \end{enumerate}
 % Dementsprechend werden die \dpkg{docstrip} Guards folgende Namen annehmen:
-% \begin{description}
-%   \item[identification-pre] Dieser Guard beinhaltet das Laden der Pakete und dem definieren der Makros,
-%   welche vor der Identifikation eines Pakets getroffen werden.
-%   \item[identification] Dieser Guard stellt das Paket vor, welches erstellt werden soll.
-%   \item[prelim-declaration] Vorläufige Deklarationen werden hier getroffen.
-%   Dies beschränkt sich auf Deklarationen, welche für das verarbeiten der Optionen genutzt werden müssen.
-%   \item[option-<Name>] Hier wird die jeweiligen Optionen deklariert.
-%   \item[option-<Name>-processed] Hier wird etwaiges postprocessing von optionen betrieben.
-%   \item[body] Nachdem die Optionen verarbeitet worden sind, kommt hier der Hauptteil der Klasse.
-% \end{description}
+%    \begin{macrocode}
+%<identification>     Identifikation des Pakets oder Klasse
+%<prelim-declaration> Vorläufige Deklarationen
+%<option-NAME>        Eine benannte Option
+%<optionloading>      Das Laden der Optionen
+%<header>             Der Kopf vor Laden der Grundklasse (in Klassendateien)
+%<baseclassloading>   Das Laden der Grundklasse
+%<body>               Der Körper nach Laden der Grundklasse (in Klassendateien)
+%    \end{macrocode}
+%
+% Um Code vor und nach den einzelnen Phasen einzuschleusen, werden die Guards
+%    \begin{macrocode}
+%<pre>  Vor der Phase
+%<peri> Während der Phase
+%<post> Nach der Phase
+%    \end{macrocode}
+% eingeführt.
+%
 % Weiterhin werden die einzelnen Klassen und Pakete über die Guards
-% \begin{description}
-%   \item[class] Für generelle Klasseneinstellungen
-%   \item[package] Für generelle Paketeinstellungen
-%   \item[article] Für die Artikelklasse
-%   \item[report] Für die Berichtklasse
-%   \item[book] Für die Buchklasse
-%   \item[thesis] Für die Klasse der Abschlussarbeiten
-%   \item[beamer<name>] Für die Beamerthemes
-%   \item[poster] Für die Posterklasse
-% \end{description}
+%    \begin{macrocode}
+%<class>
+%<package>
+%<article>
+%<report>
+%<book>
+%<thesis>
+%<beamer>
+%<beamerNAME>
+%<poster>
+%    \end{macrocode}
 % ausdifferenziert.
 %
+% Um beispielsweise Code einzuführen, welcher vor dem Verarbeiten der Klassenoptionen eingelesen wird, lautet der Guard
+%    \begin{macrocode}
+%<optionloading&pre>
+%    \end{macrocode}
+%
+% \iffalse
+%</dtx>
+% \fi
 % \subsection{ Der gemeinsame Vorspann }
 %
 % Wir benötigen das \LaTeXe{} Format vom 3.8.2023, da in diesem die Anbindung der \dpkg{expl3} vollbracht ist.
 % Zudem wird für ältere Pakete vorsorglich das \dpkg{expl3} Paket geladen, sollte der verwendete \LaTeX -Kern zu alt sein.
 %
 %    \begin{macrocode}
-%<*identification-pre>
+%<*identification&pre>
 \NeedsTeXFormat{LaTeX2e}[2023/08/03]
 \RequirePackage{expl3}
 %    \end{macrocode}
@@ -109,10 +138,192 @@
 %    \begin{macrocode}
 \newcommand\tudcd@common@version{0.5.5}
 \newcommand\tudcd@common@date{2026/01/25}
-%</identification-pre>
+%</identification&pre>
 %    \end{macrocode}
 %
+% \subsection{Phase zum Definieren der Optionen}
 %
+% In diesem kurzem Abschnitt wird das Makro \dmacro{\keys_define:nn} deklariert.
+%    \begin{macrocode}
+%<option&pre>\keys_define:nn {
+%<option&post>}
+%    \end{macrocode}
+%
+% \subsection{Gemeinsame Optionen und Einstellungen}
+%
+% Ab diesem Punkt im Quelltext ist die \dpkg{expl3}-Syntax aktiv. Daher
+% wird im Folgenden alles in \dpkg{expl3}-Syntax sein.
+%
+% \subsubsection{Gemeinsame Schnittstelle für die späte Optionenwahl}
+%
+% Um Optionen auch in der Präambel setzen zu können, ist es notwendig eine einheitliche Schnittstelle
+% dafür anzubieten.
+%
+% Grob unterteilen sich die Schlüssel und Optionen in drei Kategorien:
+% \begin{enumerate}
+%   \item Schlüssel, welche nur als globale Klassenoption geladen werden dürfen,
+%   \item Schlüssel, welche in der Präambel geladen werden dürfen und
+%   \item Schlüssel, welche jederzeit geändert werden können.
+% \end{enumerate}
+%
+% Dabei können Schlüssel natürlich früher eingestellt werden. Die Kategorisierung bezieht sich auf
+% den spätestmöglichen Zeitpunkt, zu welchem ein Schlüssel verarbeitet sein muss.
+%
+% Zum Zwecke der Dokumentation werden die drei Kategorien als
+% \begin{enumerate}
+%   \item globale Optionen,
+%   \item späte Optionen und
+%   \item einfache Optionen
+% \end{enumerate} betitelt.
+% Für späte und einfache Optionen wird folgende Schnittstelle für die Konfiguration bereitgestellt werden
+% \begin{codedescribe}[macro,
+% new=0.5.5]
+% {\TUDCDoptions,\TUDCDsetup}
+% \begin{codesyntax}
+% \tsmacro{\TUDCDoptions}{Schlüssel-Wert-Liste}
+%
+% \tsmacro{\TUDCDsetup}{Schlüssel-Wert-Liste}
+% \end{codesyntax}
+% Die \tsobj[marg]{Schlüssel-Wert-Liste} ist hierbei eine Kommaseparierte Aufzählung von \tsobj[key]{Schlüssel}-\tsobj[value]{Wert}-Paaren.
+% Die beiden Makros sind funktional äquivalent, allerdings soll \dmacro{\TUDCDoptions} angelehnt sein an die von \dpkg{tudscr} angelehnte Optionenwahl.
+%
+% \end{codedescribe}
+%    \begin{macrocode}
+%<*prelim-declaration>
+\DeclareDocumentCommand\TUDCDoptions{m}{
+  \keys_set:nn{ tudcd }{ #1 }
+}
+\DeclareDocumentCommand\TUDCDsetup{m}{
+  \keys_set:nn{ tudcd }{ #1 }
+}
+%</prelim-declaration>
+%    \end{macrocode}
+%
+% Anschließend wird die Verarbeitung der einzelnen Kategorien definiert.
+% Gemäß der Dokumentation von \dpkg{expl3} werden die \emph{Property-Lists} \dmacro{\l_keys_usage_load_prop}
+% und \dmacro{\l_keys_usage_preamble_prop} bereitgestellt, welche Schlüssel mit einem beschränktem Sichtbarkeitsbereich (engl. \emph{scope})
+% abspeichern.
+%
+% Globale Optionen können \emph{nach} der Verarbeitung innerhalb der Klassen oder Pakete nicht mehr verwendet werden,
+% daher werden sie aus der Liste der möglichen Optionen entfernt.
+%    \begin{macrocode}
+%<*optionloading&post&class>
+\msg_new:nnnn{ tudcd/options }{ globalkeyerror }{ You~have~used~key~'#1',~which~can~only~be~set~as~a~class~option! }{
+  The~key~'#1'~must~be~set~in~\iow_char:N\\ documentclass[ ... ]\{scrarticle\}.
+}
+\prop_map_inline:Nn \l_keys_usage_load_prop {
+  \clist_map_inline:nn { #2 } {
+    \keys_define:nn { #1 } { ##1 .undefine: }% Entfernen des Keys
+    \keys_define:nn { #1 } { ##1 .code:n = {
+      \msg_error:nnn{ tudcd/options }{ globalkeyerror }{ ##1 }
+      }
+    }
+  }
+}
+%</optionloading&post&class>
+%    \end{macrocode}
+%
+% Späte Optionen können \emph{nach} einlesen der Präambel nicht mehr verwendet werden,
+% daher wird an den Haken \dhook{begindocument/before} das Codesegment gehangen.
+%    \begin{macrocode}
+%<*optionloading&post>
+\msg_new:nnnn{ tudcd/options }{ latekeyerror }{ You~have~used~key~'#1',~which~can~only~be~set~inside~the~preamble! }{
+  The~key~'#1'~must~be~set~in~\iow_char:N\\ TUDCDsetup\{ ... \}.
+}
+\hook_gput_code:nnn{ begindocument/before }{ tudcd/lateoptioninvalidation }{
+  \prop_map_inline:Nn \l_keys_usage_preamble_prop {
+    \clist_map_inline:nn { #2 } {
+      \keys_define:nn { #1 } { ##1 .undefine: }% Entfernen des Keys
+      \keys_define:nn { #1 } { ##1 .code:n = {
+        \msg_error:nnn{ tudcd/options }{ latekeyerror }{ ##1 }
+        }
+      }
+    }
+  }
+}
+%</optionloading&post>
+%    \end{macrocode}
+%
+% \subsubsection{Verbotene Schlüssel und Klassenoptionen}
+%
+% Dokumentenklassen müssen in der Lage sein, Nutzer davon abzuhalten, \enquote{verbotene} Klassenoptionen anzugeben.
+% Gleichzeitig müssen Nutzer ermächtigt werden, trotzdem alle Klassenoptionen setzen zu können.
+%
+% Dafür definieren wir eine globale Kommaliste (\dcode{clist}), welche die Schlüssel aller Optionen speichert, welche
+% zu einem Fehler führen sollen. Zudem wird ein Makro zum hinzufügen bereitgestellt.
+%    \begin{macrocode}
+%<*class>
+%<*prelim-declaration>
+\clist_new:N\g_@@_prohibited_options_clist
+\cs_new:Nn\@@_add_to_prohibited_options:n{
+  \clist_put_right:Nn\g_@@_prohibited_options_clist{#1}
+}
+%    \end{macrocode}
+% Um das Entsperren der verbotenen Klassenoptionen zu gewährleisten, wird ein Haken bereitgestellt,
+% an welchem die Optionen eine Fehlernachricht hängen.
+%
+%    \begin{macrocode}
+\hook_new:n{tudcd@prohibitedkey}
+%    \end{macrocode}
+%
+% Anschließend werden Fehlernachrichten definiert, welche die Nutzenden darauf hinweisen,
+% dass sie sich außerhalb der unterstützten Optionen bewegen.
+%
+%    \begin{macrocode}
+\msg_new:nnnn{ tudcd/options }{ prohibitedkeyerror }{
+  You~have~used~key~'#1',~which~must~not~be~set~in~TUD~Script! }{
+  If~you~wish~to~use~'#1'~alongside~tudcdscr,~please~set~the~'unrestricted'~option~as~a~global~document~option.~
+  However,~any~guarantees~made~with~tudcdscr~may~not~apply~when~using~the~'unrestricted'~option. \\ \\
+  If~you~think~this~option~should~be~part~of~tudcdscr,~please~open~an~issue~at~<https://github.com/tud-cd/tudcd-scr/issues>
+}
+\msg_new:nnn{ tudcd/options }{ unrestrictedmodeinfo }{ You~have~set~option~'#1',~prohibited~keys~are~now~allowed. }
+%</prelim-declaration>
+%    \end{macrocode}
+%
+% Für die Optionsliste wird die globale Optione \dcode{unrestricted} definiert.
+% Diese sorgt dafür, dass die verbotenen Schlüssel keinen Fehler auslösen, sondern lediglich eine Information
+% im Log hinterlassen.
+%
+%    \begin{macrocode}
+%<*option&peri>
+  unrestricted .code:n = {
+    \msg_info:nnn{ tudcd/options }{ unrestrictedmodeinfo }{ unrestricted }
+    \msg_set:nnnn { tudcd/options } { prohibitedkeyerror } { In~unrestricted~mode,~prohibited~key~'##1'~gets~set.} {}
+    \msg_redirect_name:nnn{ tudcd/options }{ prohibitedkeyerror }{ info }
+  },
+  unrestricted .value_forbidden:n = true,
+  unrestricted .usage:n = load,
+%</option&peri>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*optionloading&pre>
+\clist_map_inline:Nn \g_@@_prohibited_options_clist {
+  \keys_define:nn{ tudcd }{
+    #1 .code:n = {
+      \hook_gput_code:nnn{tudcd@prohibitedkey}{#1 keyerror}{
+        \msg_error:nnn{ tudcd/options }{ prohibitedkeyerror }{ #1 }
+      }
+    }
+  }
+}
+%</optionloading&pre>
+%    \end{macrocode}
+% Nach der Optionsverarbeitung werden die verbotenen Optionen verarbeitet und anschließend wird
+% der Haken \dhook{tudcd@prohibitedkey} ausgeführt.
+%
+%    \begin{macrocode}
+%<*optionloading&post>
+\hook_use:n{tudcd@prohibitedkey}
+%</optionloading&post>
+%</class>
+%    \end{macrocode}
+%
+% \subsection{Verarbeiten der Optionen}
+%
+%    \begin{macrocode}
+%<optionloading&peri>\ProcessKeyOptions[tudcd]
+%    \end{macrocode}
 %
 % \iffalse
 %<*nothingOfNote>
@@ -152,89 +363,6 @@
     \str_set_eq:NN { \l_module_logocolor_str } { \l_keys_choice_str }
   },
   logo/color .default:n = { blue }
-}
-%%%%%%%%% CUT
-\str_new:N\l_module_fontsize_str
-\str_new:N\l_module_bcor_str
-
-\keys_define:nn{ module }{
-  fontsize .str_set_e:N = \l_module_fontsize_str,
-  fontsize .usage:n = load
-}
-
-%%% This key is forbidden
-\clist_new:N\l_forbidden_keys_and_options_clist
-
-\clist_put_right:Nn\l_forbidden_keys_and_options_clist{BCOR}
-
-\hook_new:n{@forbiddenkey}
-
-\msg_new:nnnn{ module }{ forbiddenkeyerror }{ You~have~used~option~'#1',~which~must~not~be~set~in~TUD~Script! }{
-  If~you~wish~to~use~'#1'~alongside~tudcd~scr,~please~set~the~'unrestricted'~option~as~a~global~document~option.~
-  However,~any~guarantees~made~with~tudcd~scr~may~not~apply~when~using~this~option.
-}
-\msg_new:nnn{ module }{ unrestrictedmodeinfo }{ You~have~set~option~'#1',~forbidden~keys~are~now~allowed. }
-
-%\msg_redirect_name:nnn{ module }{ forbiddenkeyerror }{ warning }
-
-\clist_map_inline:Nn \l_forbidden_keys_and_options_clist {
-  \keys_define:nn{ module }{
-    #1 .code:n = {
-      \hook_gput_code:nnn{@forbiddenkey}{#1 keyerror}{
-        \msg_error:nnn{ module }{ forbiddenkeyerror }{ #1 }
-      }
-    }
-  }
-}
-
-\keys_define:nn{ module }{
-    unrestricted .code:n = {
-      \msg_info:nnn{ module }{ unrestrictedmodeinfo }{ unrestricted }
-      \msg_set:nnnn { module } { forbiddenkeyerror } { In~unrestricted~mode,~ignoring~forbidden~key~'##1'.} {}
-      \msg_redirect_name:nnn{ module }{ forbiddenkeyerror }{ info }
-    },
-    unrestricted .usage:n = load
-}
-
-\keys_define:nn{ module }{
-  unknown .code:n = {\typeout{Unknown~Option~\l_keys_key_str=~#1~passing~to~base~class}\PassOptionsToClass{\l_keys_key_str=#1}{scrartcl}},
-  unknown .default:V = \c_novalue_tl
-}
-
-%\PassOptionsToClass{BCOR=2pt}{scrartcl}
-
-\ProcessKeyOptions[module]
-
-\msg_new:nnnn{ module }{ globalkeyerror }{ You~have~used~key~'#1',~which~can~only~be~set~as~a~class~option! }{
-  The~key~'#1'~must~be~set~in~\iow_char:N\\ documentclass[ #1 ]{scrarticle}.
-}
-\prop_map_inline:Nn \l_keys_usage_load_prop {
-  \clist_map_inline:nn { #2 } {
-    \keys_define:nn { #1 } { ##1 .undefine: }% Entfernen des Keys
-    \keys_define:nn { #1 } { ##1 .code:n = {
-      \msg_error:nnn{ module }{ globalkeyerror }{ ##1 }
-      }
-    }
-  }
-}
-
-\hook_use:n{@forbiddenkey}
-
-\NewDocumentCommand{\showchoices}{}{
-    \str_use:N\l_module_logolang_str , \str_use:N\l_module_logomodel_str, \str_use:N\l_module_logocolor_str
-}
-
-\NewDocumentCommand{\EXPLoptions}{m}{
-    \keys_set:nn { module }{ #1 }
-}
-
-\NewDocumentEnvironment{expltest}{o}{
-  \group_begin:
-  \IfValueT{#1}{
-    \keys_set:nn { module }{ #1 }
-  }
-}{
-  \group_end:
 }
 %</nothingOfNote>
 % \fi

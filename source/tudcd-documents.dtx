@@ -73,7 +73,8 @@
 % Da dies ausschließlich \dpkg{expl3}-Klassen sein werden, wird \dmacro{\ProvidesExplClass} genutzt.
 % Nach der Identifikation der Klasse wird automatisch das Makro \dmacro{\ExplSyntaxOn} gewirkt.
 %
-%    \begin{macrocode}  {⟨package ⟩} {⟨date ⟩} {⟨version ⟩} {⟨description ⟩}
+%    \begin{macrocode}
+%<@@=tudcd>
 %<*identification>
 %<article>\ProvidesExplClass{tudcdartcl}%
 %<report> \ProvidesExplClass{tudcdreprt}%
@@ -86,4 +87,20 @@
 %<book>{Eine Buchklasse im Corporate Design der TU Dresden}%
 %<thesis>{Eine Klasse für Abschlussarbeiten im Corporate Design der TU Dresden}%
 %</identification>
+%    \end{macrocode}
+%
+% \subsection{ Spezielle Klassenoptionen }
+%
+%
+%
+%
+% \subsection{ Laden der Basisklasse }
+%
+%    \begin{macrocode}
+%<*baseclassloading&peri>
+%<article>\LoadClass{scrartcl}%
+%<report> \LoadClass{scrreprt}%
+%<book>   \LoadClass{scrbook}%
+%<thesis> \LoadClass{scrbook}%
+%</baseclassloading&peri>
 %    \end{macrocode}
