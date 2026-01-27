@@ -94,21 +94,65 @@
 % sollten Nutzer das Layoutraster der TU Dresden nutzen wollen.
 % Zudem sollten Nutzer mit Leichtigkeit die verschiedenen Raster einstellen können.
 %
-% \begin{codedescribe}[
-%   socket,
-%   new=0.5.0,
-%   update=0.5.5]{tudcd/setgeometry}
-% \begin{codesyntax}
-% \tstuddocsocket{tudcd/setgeometry}{}
-% \end{codesyntax}
-% Um zu gewährleisten, dass nur ein Einstellungscode existiert, wird ein Steckplatz (engl. \enquote{Socket}s) definiert,
-% zu welchem mehrere Stecker (engl. \enquote{plugs}) definiert werden, welche die oben beschriebenen Einstellungen umsetzen.
-% Damit wird gleichzeitig gewährleistet, dass sich die einzelnen Einstellungen nicht gegenseitig überschreiben.
-% \end{codedescribe}
-% ^^X FIXME: USE A XTEMPLATE!!!!!!!!!
+% Um diesen Anforderungen gerecht zu werden, werden sogenannte \enquote{Templates} aus dem \dpkg{xtemplate} des \LaTeX{}
+% Kerns verwendet.
+% \todo{Was ist das EXPL3 Interface von xtemplates?}
+%
+% Dazu wird zuerst ein neuer Template-Typ (in der Dokumentation \enquote{Object} genannt) deklariert,
+%
 %    \begin{macrocode}
 %<*prelim-declaration>
-\socket_new:nn{tudcd/geometry}{0}
+\NewTemplateType{tudcd/setgeometry}{0}
+%    \end{macrocode}
+%
+% welcher drei konkrete Templates deklariert bekommt.
+%
+%    \begin{macrocode}
+\DeclareTemplateInterface{tudcd/setgeometry}{brochuregrid}{0}{
+  usemargin : boolean
+}
+\DeclareTemplateInterface{tudcd/setgeometry}{postergrid}{0}{
+  secondlogoline : boolean = false,
+  rounded-values : boolean = false
+}
+\DeclareTemplateInterface{tudcd/setgeometry}{titlepage}{0}{
+  secondlogoline : boolean = false,
+  backgroundcode : tokenlist = {}
+}
+%    \end{macrocode}
+%
+% Anschließend können mittels der Templates sogenannte Instanzen deklariert werden.
+% Im Fall der Geometrieeinstellungen sind Instanzen konkrete Geometrieeinstellungen,
+% welche die "Standardgeometrie" setzen.
+%
+% Die ersten beiden Instanzen Instanz sind das Broschürenraster mit Marginalie und ohne Marginalie
+%
+%    \begin{macrocode}
+\DeclareInstance{tudcd/setgeometry}{margintrue}{brochuregrid}{
+  usemargin = true
+}
+\DeclareInstance{tudcd/setgeometry}{marginfalse}{brochuregrid}{
+  usemargin = false
+}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\DeclareInstance{tudcd/setgeometry}{conforming}{postergrid}{
+  rounded-values = true
+}
+%    \end{macrocode}
+%
+% Anschließend werden die entsprechenden Längen definiert.
+% Dabei ergibt sich die Spaltenbreite aus den Rändern und dem Spaltenseparator,
+% es wird jedoch diese Länge aus Praktikabilitätsgründen mit unterstützt.
+%
+%    \begin{macrocode}
+\dim_new:N\l_top_margin_dim
+\dim_new:N\l_bottom_margin_dim
+\dim_new:N\l_inner_margin_dim
+\dim_new:N\l_outer_margin_dim
+\dim_new:N\l_grid_column_sep_dim
+\dim_new:N\l_grid_column_width_dim
 %    \end{macrocode}
 %
 % Um in der Optionenwahl die ausgewählte Option abzuspeichern, wird ein String dafür angelegt.
@@ -116,6 +160,7 @@
 %    \begin{macrocode}
 \str_new:N\l_@@_geometry_plug_name_str
 \str_new:N\l_@@_geometry_paper_size_str
+\str_set:Nn\l_@@_geometry_paper_size_str{a4paper}
 \bool_new:N\l_@@_geometry_margin_bool
 \bool_set_false:N\l_@@_geometry_margin_bool
 %</prelim-declaration>
@@ -124,8 +169,33 @@
 % Die Schlüssel für die genutzte Geometrie wird im folgenden definiert.
 %    \begin{macrocode}
 %<*option-geometry>
+  a5paper .code:n = { \str_set:Nn\l_@@_geometry_paper_size_str{a5paper} },
+  a5paper .value_forbidden:n = { true },
+  a4paper .code:n = { \str_set:Nn\l_@@_geometry_paper_size_str{a4paper} },
+  a4paper .value_forbidden:n = { true },
+%<*poster>
+  a3paper .code:n = { \str_set:Nn\l_@@_geometry_paper_size_str{a3paper} },
+  a3paper .value_forbidden:n = { true },
+  a2paper .code:n = { \str_set:Nn\l_@@_geometry_paper_size_str{a2paper} },
+  a2paper .value_forbidden:n = { true },
+  a1paper .code:n = { \str_set:Nn\l_@@_geometry_paper_size_str{a1paper} },
+  a1paper .value_forbidden:n = { true },
+  a0paper .code:n = { \str_set:Nn\l_@@_geometry_paper_size_str{a0paper} },
+  a0paper .value_forbidden:n = { true },
+%</poster>
+  paper .choice:nn = {
+    a5paper, a4paper
+%<poster>    ,a3paper, a2paper, a1paper, a0paper
+  }{
+    \str_set_eq:NN \l_@@_geometry_paper_size_str \l_keys_choice_str
+  },
+%<*article|report|book|thesis>
   usemargin .bool_set:N = \l_@@_geometry_margin_bool,
   usemargin .default:n = { true },
   usemargin .initial:n = { false },
+%</article|report|book|thesis>
 %</option-geometry>
 %    \end{macrocode}
+%
+%
+%
