@@ -1,0 +1,131 @@
+% \iffalse meta-comment
+%
+%  TUDCD-Script -- Corporate Design of Technische Universität Dresden
+% ----------------------------------------------------------------------------
+%
+%  Copyright (C) Jochen Diepelt <David.diepelt@gmx.net>, 2025
+%
+% ----------------------------------------------------------------------------
+%
+%  This work may be distributed and/or modified under the conditions of the
+%  LaTeX Project Public License, either version 1.3c of this license or
+%  any later version. The latest version of this license is in
+%    http://www.latex-project.org/lppl.txt
+%  and version 1.3c or later is part of all distributions of
+%  LaTeX version 2008-05-04 or later.
+%
+%  This work has the LPPL maintenance status "maintained".
+%
+%  The current maintainer and author of this work is Jochen Diepelt.
+%
+% ----------------------------------------------------------------------------
+%
+% \fi
+%
+% \iffalse ins:batch + dtx:driver
+%<*ins>
+\ifx\documentclass\undefined
+  \input docstrip.tex
+  \ifToplevel{\batchinput{tudcd.ins}}
+\else
+  \let\endbatchfile\relax
+\fi
+\endbatchfile
+%</ins>
+%<*dtx>
+\ProvidesFile{tudcd-documents.dtx}[2025/10/02]
+\documentclass[english,ngerman]{tudcddoc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman=ngerman-x-latest]{hyphsubst}
+
+\usepackage{babel}
+\usepackage[babel]{microtype}
+\RecordChanges
+\begin{document} % Diese Dokumentation dokumentiert NUR diese Datei
+  \title{\Large Dokumentation der Datei \texttt{\jobname.dtx} \\
+  \normalsize Generiert durch \texttt{\$ enginetex \jobname.dtx}}
+  \author{Jochen Diepelt}
+  \maketitle
+  \tableofcontents
+
+  \DocInput{tudcd-documents.dtx}
+\end{document}
+%</dtx>
+% \fi
+%
+% \selectlanguage{ngerman}
+%
+% \section{\texttt{tudcd-geometry}: Einstellung der Seitengeometrie}
+%
+% \subsection{ Vorbemerkung }
+%
+% Die Seitengeometrie des Corporate Designs ist aufgeteilt in folgende Kategorien
+% \begin{itemize}
+%   \item Das Broschürenraster in jeweils \begin{itemize}
+%     \item einseitig und ^^X Diese beiden Optionen werden von Geometry mit Inner und Outer margin schon durchdefiniert.
+%     \item zweiseitig
+%   \end{itemize}
+%   sowie \begin{itemize}
+%     \item ohne Marginalie und
+%     \item mit Marginalie
+%   \end{itemize}
+%   sowie \begin{itemize}
+%     \item im strikten Modus mit Broschürenkopf- und Fußsteg,
+%     \item im laxen Modus mit Platz für etwaige Kolumnentitel
+%   \end{itemize}
+%   Damit sind insgesamt $2 \cdot 2 \cdot 2 \cdot n = 8n$ für $n$ Papierformate einzustellen.
+%   \item Das Posterraster mit jeweils \begin{itemize}
+%     \item gerundeten Werten und
+%     \item nicht gerundeten Werten,
+%   \end{itemize} für $n$ Papierformate.
+%   \item Das Raster für Titelseiten in \begin{itemize}
+%     \item großem Rand drumherum (in A4 = 15mm)
+%   \end{itemize}, sowie
+%   \item ein Briefraster, dieses wird jedoch besonders behandelt. %TODO: Briefklasse erstellen.
+% \end{itemize}
+%
+% Zudem müssen Nutzer in der Lage sein, die Seitengeometry seitenweise zu wechseln um
+% anschließend zur Ursprungsgeometrie zurückzukehren. Ein Anwendungsfall hierfür sind Seiten, welche
+% andere PDFs als Vollseite einbinden.
+%
+% \subsection{ Ein Stecker für die Einstellung der Seitengeometrie }
+%
+% Die größte Herausforderung bei der Einstellung der Geometrie ist das Verhindern der Einstellungen von \dpkg{typearea},
+% sollten Nutzer das Layoutraster der TU Dresden nutzen wollen.
+% Zudem sollten Nutzer mit Leichtigkeit die verschiedenen Raster einstellen können.
+%
+% \begin{codedescribe}[
+%   socket,
+%   new=0.5.0,
+%   update=0.5.5]{tudcd/setgeometry}
+% \begin{codesyntax}
+% \tstuddocsocket{tudcd/setgeometry}{}
+% \end{codesyntax}
+% Um zu gewährleisten, dass nur ein Einstellungscode existiert, wird ein Steckplatz (engl. \enquote{Socket}s) definiert,
+% zu welchem mehrere Stecker (engl. \enquote{plugs}) definiert werden, welche die oben beschriebenen Einstellungen umsetzen.
+% Damit wird gleichzeitig gewährleistet, dass sich die einzelnen Einstellungen nicht gegenseitig überschreiben.
+% \end{codedescribe}
+% ^^X FIXME: USE A XTEMPLATE!!!!!!!!!
+%    \begin{macrocode}
+%<*prelim-declaration>
+\socket_new:nn{tudcd/geometry}{0}
+%    \end{macrocode}
+%
+% Um in der Optionenwahl die ausgewählte Option abzuspeichern, wird ein String dafür angelegt.
+%
+%    \begin{macrocode}
+\str_new:N\l_@@_geometry_plug_name_str
+\str_new:N\l_@@_geometry_paper_size_str
+\bool_new:N\l_@@_geometry_margin_bool
+\bool_set_false:N\l_@@_geometry_margin_bool
+%</prelim-declaration>
+%    \end{macrocode}
+%
+% Die Schlüssel für die genutzte Geometrie wird im folgenden definiert.
+%    \begin{macrocode}
+%<*option-geometry>
+  usemargin .bool_set:N = \l_@@_geometry_margin_bool,
+  usemargin .default:n = { true },
+  usemargin .initial:n = { false },
+%</option-geometry>
+%    \end{macrocode}
