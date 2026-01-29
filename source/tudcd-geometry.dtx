@@ -205,8 +205,9 @@
   This~should~not~happen~during~normal~processing,~please~file~an~Issue~at~<https://github.com/tud-cd/tudcd-scr/issues>
 }
 
-\str_if_eq:nVF{koma}\l_@@_geometry_instance_name_str{
-  \PassOptionsToPackage{usegeometry}{typearea}
+\str_if_eq:nVT{koma}\l_@@_geometry_instance_name_str{
+  %\typeout{Test}
+  \PassOptionsToPackage{usegeometry,DIV=calc}{typearea}
 }
 \RequirePackage[paper=\str_use:N\l_@@_geometry_paper_size_str]{geometry}
 
@@ -259,7 +260,7 @@
 \msg_error:nnV{ tudcd }{geometry/papersizeerror}\l_@@_geometry_paper_size_str
   }
   \bool_if:nTF{\l_tmpa_bool}{% use the margin
-    \newgeometry{
+    \geometry{
       includemp,
       paper=\str_use:N\l_@@_geometry_paper_size_str,
       inner=\dim_use:N\l_@@_inner_margin_dim,
@@ -268,7 +269,7 @@
       bottom=\dim_use:N\l_@@_bottom_margin_dim
     }
   }{
-    \newgeometry{
+    \geometry{
       paper=\str_use:N\l_@@_geometry_paper_size_str,
       inner=\dim_use:N\l_@@_inner_margin_dim,
       outer=\dim_use:N\l_@@_outer_margin_dim,
@@ -302,7 +303,7 @@
   rounded-values = true
 }
 
-\hook_gput_code:nnn{begindocument/after}{setgeometry}{
+\hook_gput_code:nnn{begindocument/before}{setgeometry}{
   \UseInstance{tudcd/setgeometry}{marginfalse}
 }
 %</header&peri>
