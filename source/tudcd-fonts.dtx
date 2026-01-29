@@ -156,8 +156,7 @@
 \DeclareTextFontCommand{\textcdeb}{\cdebseries}
 \DeclareRobustCommand{\cdubseries}{\fontseries{Black}\selectfont}
 \DeclareTextFontCommand{\textcdub}{\cdubseries}
-}{
-  % Hier ist pdfTeX verwendet worden.
+}{ % Hier ist pdfTeX verwendet worden.
 \renewcommand{\bfdefault}{sb}
 \renewcommand{\mddefault}{medium}
 %    \end{macrocode}
@@ -276,7 +275,6 @@
     %\belowdisplayshortskip 9pt plus 3.5pt minus 3pt%
     %\belowdisplayskip\abovedisplayskip%
     %\let\@listi\@listI
-
   }%
   \let\small\@undefined
   \DeclareRobustCommand\small{
@@ -324,7 +322,7 @@
   \let\Huge\@undefined
   \DeclareRobustCommand\Huge{\@setfontsize\Huge {1606308sp}{1752336sp}}
   % Manual Fontsizesetting 9pt
-  \msg_info:nnVn{ tudcd }{ font/fontsizetudcdinfo }\g_@@_fontsize_str{657128sp}
+  \msg_info:nnVn{ tudcd }{ font/fontsizetudcdinfo } \g_@@_fontsize_str {657128sp}
   \bool_set_true:N\l_@@_option_was_parsed_bool
   \PassOptionsToClass{fontsize=657128sp}
 %<article>  {scrartcl}%
@@ -334,25 +332,34 @@
 }
 %    \end{macrocode}
 %
+% Zusatzlich zu den \enquote{herkömmlichen} Schriftgrößen,
+% werden die im Broschürenraster fehlenden Schriftgrößen manuel nachgeliefert.
+%
+%    \begin{macrocode}
+\let\SubHIIgroesse\@undefined
+\DeclareRobustCommand\SubHIIgroesse{\@setfontsize\SubHIIgroesse{11\tudpt}{12\tudpt}}
+\let\ZitatGrossgroesse\@undefined
+\DeclareRobustCommand\ZitatGrossgroesse{\@setfontsize\ZitatGrossgroesse{57\tudpt}{60\tudpt}}
+%    \end{macrocode}
+%
 % Sollten die vorherigen Optionen nicht verarbeitet worden sein,
 % dann wird versucht zu ermitteln, ob die letzten 5 Charaktere
 % \texttt{tudpt} sind. Sollte dies der Fall sein,
 % wird mit der internen Länge \dmacro{\tudpt} multipliziert,
-% ansonsten wird die Option unbearbeitet an \KOMAScript durchgereicht.
+% ansonsten wird die Option unbearbeitet an \KOMAScript{} durchgereicht.
 %
 %    \begin{macrocode}
 \bool_if:nT{!\l_@@_option_was_parsed_bool}{
-  \str_clear:N\l_tmpa_str%
+
   \str_set:Ne\l_tmpa_str{
     \str_range:Nnn\g_@@_fontsize_str{-5}{-1}
   }
   \str_set_eq:NN\l_tmpb_str\g_@@_fontsize_str%
-  \str_if_eq:VnTF\l_tmpa_str{tudcd}{
+  \str_if_eq:VnTF\l_tmpa_str{tudpt}{
     % Entferne das tudpt
     \str_remove_once:Nn\l_tmpb_str{tudpt}
     % Anschließend bastel einen Ausdruck daraus
-    \str_log:N\l_tmpb_str
-    \dim_set:Nn\l_tmpa_dim{\c_@@_typo_point_dim * \l_tmpb_str}
+    \dim_set:Nn\l_tmpa_dim{\c_@@_typo_point_dim * \str_use:N\l_tmpb_str}
 
     \msg_info:nnVV{ tudcd }{ font/fontsizetudcdinfo }\g_@@_fontsize_str\l_tmpa_dim
     \bool_set_true:N\l_@@_option_was_parsed_bool
@@ -376,7 +383,6 @@
     \msg_info:nnVV{ tudcd }{ font/fontsizetudcdinfo }\g_@@_fontsize_str\g_@@_fontsize_str
     \bool_set_true:N\l_@@_option_was_parsed_bool
 
-    \tl_set:Ne\l_tmpa_tl{\exp_not:o{\dim_use:N\l_tmpa_dim}}
     \tl_set:Ne\l_tmpa_tl{\exp_not:n{\PassOptionsToClass}{fontsize=\exp_not:o{\g_@@_fontsize_str}}}
     \tl_put_right:Nn\l_tmpa_tl{
 %<article>  {scrartcl}%
