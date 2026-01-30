@@ -89,11 +89,6 @@
 %</identification>
 %    \end{macrocode}
 %
-% \subsection{ Spezielle Klassenoptionen }
-%
-%
-%
-%
 % \subsection{ Laden der Basisklasse }
 %
 %    \begin{macrocode}
@@ -103,4 +98,45 @@
 %<book>   \LoadClass{scrbook}%
 %<thesis> \LoadClass{scrbook}%
 %</baseclassloading&peri>
+%    \end{macrocode}
+%
+% \subsection{ Inkompatible Pakete }
+%
+% Um gewissen Anwendungsfehlern vorzubeugen, werden gewisse Pakete detektiert und es wird direkt ein Fehler
+% ausgegeben.
+%
+%    \begin{macrocode}
+%<*body&peri>
+\msg_new:nnnn{ tudcd }{ illegalpackageerror }
+{ You've~loaded~package~'#1'.~It~is~incompatible~with~'#2'! }
+{ #3 \\ If~you~need~functionality~not~supplied~by~'#2',~please~open~an~issue~at~<https://github.com/tud-cd/tudcd-scr/issues> }
+\msg_new:nnnn{ tudcd }{ internalpackageerror }
+{ You've~loaded~package~'#1'.~Its~functionality~is~already~included~in~'#2'! }
+{ If~some~functionality~is~not~supplied~by~'#2',~please~open~an~issue~at~<https://github.com/tud-cd/tudcd-scr/issues> }
+%
+\hook_gput_code:nnn{begindocument/before}{illegalpackageloading}{
+\IfPackageLoadedT{fancyhdr}{
+  \msg_error:nnnnn{tudcd}{illegalpackageerror}{fancyhdr}
+%<article>{tudcdartcl}%
+%<report> {tudcdreprt}%
+%<book>   {tudcdbook}%
+%<thesis> {tudcdthesis}%
+ { fancyhdr~is~incompatible~with~the~underlying~KOMA~Script~class.~See~the~KOMA~Script~documentation~for~more~details.}
+}
+\IfPackageLoadedT{tudcdcolor}{
+  \msg_error:nnnn{tudcd}{internalpackageerror}{tudcdcolor}
+%<article>{tudcdartcl}%
+%<report> {tudcdreprt}%
+%<book>   {tudcdbook}%
+%<thesis> {tudcdthesis}%
+}
+\IfPackageLoadedT{tudcdfonts}{
+  \msg_error:nnnn{tudcd}{internalpackageerror}{tudcdfonts}
+%<article>{tudcdartcl}%
+%<report> {tudcdreprt}%
+%<book>   {tudcdbook}%
+%<thesis> {tudcdthesis}%
+}
+}
+%</body&peri>
 %    \end{macrocode}

@@ -247,6 +247,7 @@
 % daher wird an den Haken \dhook{begindocument/before} das Codesegment gehangen.
 %    \begin{macrocode}
 %<*optionloading&post>
+%<package>\msg_if_exist:nnF {tudcd}{options/latekeyerror}{
 \msg_new:nnnn{ tudcd }{ options/latekeyerror }{ You~have~used~key~'#1',~which~can~only~be~set~inside~the~preamble! }{
   The~key~'#1'~must~be~set~in~\iow_char:N\\ TUDCDsetup\{ ... \}.
 }
@@ -261,6 +262,7 @@
     }
   }
 }
+%<package>}
 %</optionloading&post>
 %    \end{macrocode}
 %
