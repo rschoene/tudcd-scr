@@ -81,7 +81,7 @@
 \newsavebox\tudcd@elements@chaptertitlebox%
 %% Ebene, Nummer, Text
 \renewcommand{\chapterlinesformat}[3]{%
-\savebox{\tudcd@elements@chaptertitlebox}{\parbox[t][0pt][t]{\linewidth}{\raggedchapter\@hangfrom{#2}{#3}}}%
+\savebox{\tudcd@elements@chaptertitlebox}{\parbox[t][0pt][t]{\linewidth}{\color_ensure_current:\raggedchapter\@hangfrom{#2}{#3}}}%
 \setlength\tudcd@elements@height{\dimexpr(\ht\tudcd@elements@chaptertitlebox+\dp\tudcd@elements@chaptertitlebox)}% Hier ist die komplette Höhe des Titels
 \global\tudcd@elements@height=\tudcd@elements@height%
 \makebox(\linewidth,0pt)[lt]{%
@@ -103,14 +103,14 @@
 % Anschließend werden die einzelnen Gestaltungselemente durchdefiniert.
 %
 % Gliederungsüberschriften können farbig hervorgehoben werden, daher wird den \dmacro{\setkomafont} Einstellungen
-% \dmacro{\tudcd@elements@fontcolor} mitgegeben.
+% \dmacro{\@@_select_highlight_color:} mitgegeben.
 %
 %    \begin{macrocode}
-%<book|report>\setkomafont{chapter}{\huge\tudcd@elements@fontcolor\bfseries\sffamily}
-\setkomafont{section}{\LARGE\tudcd@elements@fontcolor\bfseries\sffamily}
-\setkomafont{subsection}{\Large\tudcd@elements@fontcolor\bfseries\sffamily}
-\setkomafont{subsubsection}{\normalsize\tudcd@elements@fontcolor\bfseries\sffamily}
-\setkomafont{paragraph}{\normalsize\tudcd@elements@fontcolor\bfseries}
+%<book|report>\setkomafont{chapter}{\huge\@@_select_highlight_color:\bfseries\sffamily}
+\setkomafont{section}{\LARGE\@@_select_highlight_color:\bfseries\sffamily}
+\setkomafont{subsection}{\Large\@@_select_highlight_color:\bfseries\sffamily}
+\setkomafont{subsubsection}{\normalsize\@@_select_highlight_color:\bfseries\sffamily}
+\setkomafont{paragraph}{\normalsize\@@_select_highlight_color:\bfseries}
 %    \end{macrocode}
 %
 % \todo{Wie könnte man Randnotizen einstellen?}

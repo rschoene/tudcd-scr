@@ -100,15 +100,15 @@
 %    \begin{macrocode}
 \cs_new:Nn \@@_select_highlight_color:
 {
-  \color_select:V\l_@@_highlight_color_tl
+  \tl_if_empty:NF\l_@@_highlight_color_tl{\color_select:V\l_@@_highlight_color_tl}
 }
 \cs_new:Nn \@@_select_background_color:
 {
-  \color_select:V\l_@@_background_color_tl
+  \tl_if_empty:NF\l_@@_background_color_tl{\color_select:V\l_@@_background_color_tl}
 }
 \cs_new:Nn \@@_select_second_background_color:
 {
-  \color_select:V\l_@@_second_background_color_tl
+  \tl_if_empty:NF\l_@@_second_background_color_tl{\color_select:V\l_@@_second_background_color_tl}
 }
 %    \end{macrocode}
 %
@@ -134,11 +134,11 @@
     \keys_set:nn{ tudcd / color }{ #1 }
   },
   color/highlight-color .tl_set:N = \l_@@_highlight_color_tl,
-  color/highlight-color .initial:n = Brilliantblau,
+  color/highlight-color .initial:n = {Brilliantblau},
   color/background-color .tl_set:N = \l_@@_background_color_tl,
-  color/background-color .initial:n = {},
+  color/background-color .initial:n = {.},
   color/second-background-color .tl_set:N = \l_@@_second_background_color_tl,
-  color/second-background-color .initial:n = {},
+  color/second-background-color .initial:n = {.},
   color/model .choices:nn = {
     rgb, cmyk
   }{
