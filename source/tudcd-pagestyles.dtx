@@ -180,7 +180,7 @@
   \DeclareLayer[
     align=tl,
     area={0pt}{0pt}{\paperwidth}{\paperheight},
-    contents={\noindent\tl_if_blank:VF\l_@@_page_color_tl{\color_select:n{\l_@@_page_color_tl}\rule{\layerwidth}{\layerheight}}},
+    contents={\noindent\tl_if_blank:VF\l_@@_page_color_tl{\color_select:V{\l_@@_page_color_tl} \rule{\layerwidth}{\layerheight}}},
     background
   ]{tudcdpage.pagecolor}
 %    \end{macrocode}
@@ -254,6 +254,7 @@
   \IfValueT{#1}{
     \keys_set:nn{ tudcd/titlepage }{ #1 }
   }%
+  \tl_set_eq:NN\l_@@_page_color_tl\l_@@_titlepage_background_color_tl
   \newgeometry{%
     inner=\l_@@_inner_margin_dim,%
     outer=\l_@@_outer_margin_dim,%
