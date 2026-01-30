@@ -1,0 +1,232 @@
+% \iffalse meta-comment
+%/GitFileInfo=tudcd-base.dtx
+%
+%  TUDCD-Script -- Corporate Design of Technische Universität Dresden
+% ----------------------------------------------------------------------------
+%
+%  Copyright (C) Jochen Diepelt <David.diepelt@gmx.net>, 2025
+%
+% ----------------------------------------------------------------------------
+%
+%  This work may be distributed and/or modified under the conditions of the
+%  LaTeX Project Public License, either version 1.3c of this license or
+%  any later version. The latest version of this license is in
+%    http://www.latex-project.org/lppl.txt
+%  and version 1.3c or later is part of all distributions of
+%  LaTeX version 2008-05-04 or later.
+%
+%  This work has the LPPL maintenance status "maintained".
+%
+%  The current maintainer and author of this work is Jochen Diepelt.
+%
+% ----------------------------------------------------------------------------
+%
+% \fi
+%
+% \iffalse ins:batch + dtx:driver
+%<*ins>
+\ifx\documentclass\undefined
+  \input docstrip.tex
+  \ifToplevel{\batchinput{tudcd.ins}}
+\else
+  \let\endbatchfile\relax
+\fi
+\endbatchfile
+%</ins>
+%<*dtx>
+\ProvidesFile{tudcd-colors.dtx}[2025/10/02]
+\documentclass[english,ngerman]{tudcddoc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman=ngerman-x-latest]{hyphsubst}
+
+\usepackage{babel}
+\usepackage[babel]{microtype}
+\RecordChanges
+\begin{document} % Diese Dokumentation dokumentiert NUR diese Datei
+  \title{\Large Dokumentation der Datei \texttt{\jobname.dtx} \\
+  \normalsize Generiert durch \texttt{\$ enginetex \jobname.dtx}}
+  \author{Jochen Diepelt}
+  \maketitle
+  \tableofcontents
+
+  \DocInput{tudcd-colors.dtx}
+\end{document}
+%</dtx>
+% \fi
+%
+% \selectlanguage{ngerman}
+%
+% \section{\texttt{tudcd-colors}: Farben des Corporate Designs der TU Dresden}
+%
+% \subsection{Vorbemerkung}
+%
+% Die Farbeinstellungen in \TeX{} und daraus abgeleiteten Engines wie \LuaTeX{} sind zum Zeitpunkt des Schreibens
+% in einem Umbruch: Während traditionell das \dpkg{xcolor}-Paket Farbeinstellungen ermöglicht hat, bietet
+% \dpkg{expl3} einen eigenen Farbwahlmechanismus an, welcher unter anderem auch sog.\@ Spot-Farben verarbeiten kann.
+% Leider sind diese beiden Mechanismen (noch) nicht kompatibel, weshalb innerhalb dieser Klasse beide Mechanismen unterstützt werden.
+% ^^X Siehe dazu auch \url{}
+%
+% \subsection{Identifikation des Pakets}
+%
+% Damit auch ein einzelstehendes Paket bereitgestellt werden kann,
+% wird dieses hier identifiziert.
+%
+%    \begin{macrocode}
+%<*identification&package>
+%<@@=tudcd>
+\ProvidesExplPackage{tudcdcolor}{\tudcd@common@date}{\tudcd@common@version}{Ein Paket für die Konfiguration der Farben des Corporate Design der TU Dresden}
+%</identification&package>
+%    \end{macrocode}
+%
+% \subsection{Optionen der Farbauswahl}
+%
+% \iffalse
+% https://contrast-grid.eightshapes.com/?version=1.1.0&background-colors=&foreground-colors=%2300005A%2C%20Dunkelblau%0D%0A%2300008C%2C%20Prim%C3%A4rblau%0D%0A%232F57B2%2C%20Blau%201%0D%0A%237369BE%2C%20Violett%201%0D%0A%23BC1589%2C%20Pink%201%0D%0A%23D20F41%2C%20Rot%201%0D%0A%23C85000%2C%20Orange%201%0D%0A%23FFC700%2C%20Gelb%201%0D%0A%23767A23%2C%20Oliv%201%0D%0A%23007D4B%2C%20Gr%C3%BCn%201%0D%0A%230A777F%2C%20Petrol%201%0D%0A%2397C6FF%2C%20Blau%202%0D%0A%23C8C8FF%2C%20Violett%202%0D%0A%23FFB9FF%2C%20Pink%202%0D%0A%23FFAAA5%2C%20Rot%202%0D%0A%23FFBE78%2C%20Orange%202%0D%0A%23FFE483%2C%20Gelb%202%0D%0A%23D2DC46%2C%20Oliv%202%0D%0A%238CE6AA%2C%20Gr%C3%BCn%202%0D%0A%238CE6D7%2C%20Petrol%202%0D%0A%23000000%2C%20Schwarz%0D%0A%23323F4B%2C%20Grau%20100%0D%0A%23566371%2C%20Grau%2080%0D%0A%237D8894%2C%20Grau%2060%0D%0A%23A5AEB8%2C%20Grau%2040%0D%0A%23D0D5DC%2C%20Grau%2020%0D%0A%23E7E9ED%2C%20Grau%2010%0D%0A%23FFFFFF%2C%20Wei%C3%9F&es-color-form__tile-size=compact&es-color-form__show-contrast=aaa&es-color-form__show-contrast=aa&es-color-form__show-contrast=aa18&es-color-form__show-contrast=dnp
+% \fi
+%
+% Das Corporate Design lässt zur Gestaltung von ausgezeichneten Seiten verschiedene Farben zu.
+% Diese können in eine Auszeichnungsfarbe, eine primäre Hintergrundfarbe und eine sekundäre Hintergrundfarbe
+% unterteilt werden.
+% Daher werden drei Tokenlists angelegt, um eben diese Farben abzuspeichern.
+%
+%    \begin{macrocode}
+%<*prelim-declaration>
+\tl_new:N\l_@@_background_color_tl
+\tl_new:N\l_@@_second_background_color_tl
+\tl_new:N\l_@@_highlight_color_tl
+%    \end{macrocode}
+% Um die einzelnen Farben anzuwenden, werden entsprechende Makros bereitgestellt.
+% Dies sind die internen Makros
+%    \begin{macrocode}
+\cs_new:Nn \@@_select_highlight_color:
+{
+  \color_select:V\l_@@_highlight_color_tl
+}
+\cs_new:Nn \@@_select_background_color:
+{
+  \color_select:V\l_@@_background_color_tl
+}
+\cs_new:Nn \@@_select_second_background_color:
+{
+  \color_select:V\l_@@_second_background_color_tl
+}
+%    \end{macrocode}
+%
+% Und dies sind die öffentlichen Makros
+%
+%    \begin{macrocode}
+\NewDocumentCommand\SelectTUDCDHighlightColor{}{
+  \@@_select_highlight_color:
+}
+\NewDocumentCommand\SelectTUDCDBackgroundColor{}{
+  \@@_select_background_color:
+}
+\NewDocumentCommand\SelectTUDCDSecondBackgroundColor{}{
+  \@@_select_second_background_color:
+}
+%</prelim-declaration>
+%    \end{macrocode}
+%
+% Die dazugehörigen Optionen sind dementsprechend die Farbeinstellungen.
+%    \begin{macrocode}
+%<*option&peri>
+  color .code:n = {
+    \keys_set:nn{ tudcd / color }{ #1 }
+  },
+  color/highlight-color .tl_set:N = \l_@@_highlight_color_tl,
+  color/highlight-color .initial:n = Brilliantblau,
+  color/background-color .tl_set:N = \l_@@_background_color_tl,
+  color/background-color .initial:n = {},
+  color/second-background-color .tl_set:N = \l_@@_second_background_color_tl,
+  color/second-background-color .initial:n = {},
+  color/model .choices:nn = {
+    rgb, cmyk
+  }{
+    \str_case:VnF\l_keys_choice_str{
+      {rgb}{
+        \tl_set:Nn\l_color_fixed_model_tl{rgb}
+      }
+      {cmyk}{
+        \tl_set:Nn\l_color_fixed_model_tl{cmyk}
+      }
+    }{
+% Todo: ERROR Message
+    }
+  },
+  color/model .initial:n = rgb,
+%</option&peri>
+%    \end{macrocode}
+%
+% \subsection{Definition der Farben}
+%
+% \iffalse
+% Wenn dunkle Farben als Hintergrundfarbe genutzt werden, müssen die Schriften weiß gesetzt werden.
+% Ausnahme bildet hier das Gelb, was in beiden Tönen mit dunkler Schrift kombiniert wird.
+% Die Grauwerte 100% und 80% erfordern Schrift in Weiß.
+% Längere Fließtexte werden immer in schwarz gesetzt. Titel und plakative kurze Texte können im Primärblau gesetzt sein.
+% In Hintergründen können zwei Farben miteinander kombiniert werden.
+% \fi
+%
+% Um Code-Duplikation zu vermeiden, wird ein Hilfsmakro eingeführt, welches
+% für \dpkg{xcolor} und \dcode{l3color} Farben definiert.
+%    \begin{macrocode}
+%<*header&peri>
+\RequirePackage{xcolor}
+% Colorname, Models, Values
+\cs_new:Nn \@@_definecolor:nnn
+{
+  \color_set:nnn{#1}{#2}{#3}
+  \definecolor{#1}{#2}{#3}%
+}
+%    \end{macrocode}
+% Die Farben des CD der TU-Dresden sind vorgegeben mit CMYK und RGB werten und werden mit Ihren Begriffen
+% mittels des Pakets \texttt{xcolor} definiert
+% Die Farben werden anschließend mittels \dcode{\definecolor} definiert
+%    \begin{macrocode}
+%% Primärfarben
+\@@_definecolor:nnn{Brilliantblau}{RGB/cmyk}{0,0,140/1,0.80,0.05,0}%
+\@@_definecolor:nnn{Dunkelblau}{RGB/cmyk}{0,20,80/1,0.70,0.10,0.60}%
+%% Sekundärfarben
+\@@_definecolor:nnn{Blau1}{RGB/cmyk}{47,87,178/0.90,0.50,0,0}%
+\@@_definecolor:nnn{Blau2}{RGB/cmyk}{151,198,255/0.43,0.15,0,0}%
+% --
+\@@_definecolor:nnn{Violett1}{RGB/cmyk}{115,105,190/0.64,0.62,0,0}%
+\@@_definecolor:nnn{Violett2}{RGB/cmyk}{200,200,255/0.20,0.20,0,0}%
+% --
+\@@_definecolor:nnn{Magenta1}{RGB/cmyk}{188,21,137/0.30,0.96,0,0}%
+\@@_definecolor:nnn{Magenta2}{RGB/cmyk}{255,185,255/0.0,0.30,0.0,0.0}%
+% --
+\@@_definecolor:nnn{Rot1}{RGB/cmyk}{210,15,65/0,1,0.60,0}%
+\@@_definecolor:nnn{Rot2}{RGB/cmyk}{255,170,165/0,0.44,0.27,0}%
+% --
+\@@_definecolor:nnn{Orange1}{RGB/cmyk}{200,80,0/0,0.90,1,0.20}%
+\@@_definecolor:nnn{Orange2}{RGB/cmyk}{255,190,120/0,0.30,0.55,0}%
+% --
+\@@_definecolor:nnn{Gelb1}{RGB/cmyk}{255,199,0/0,0.25,1,0}%
+\@@_definecolor:nnn{Gelb2}{RGB/cmyk}{255,228,131/0,0.05,0.50,0}%
+% --
+\@@_definecolor:nnn{Oliv1}{RGB/cmyk}{118,122,35/0.50,0.35,1,0.22}%
+\@@_definecolor:nnn{Oliv2}{RGB/cmyk}{210,220,70/0.25,0,0.81,0}%
+% --
+\@@_definecolor:nnn{Gruen1}{RGB/cmyk}{0,125,75/0.90,0,0.80,0.15}%
+\@@_definecolor:nnn{Gruen2}{RGB/cmyk}{140,230,170/0.45,0,0.45,0}%
+% --
+\@@_definecolor:nnn{Tuerkis1}{RGB/cmyk}{10,119,127/1,0.10,0.30,0.40}%
+\@@_definecolor:nnn{Tuerkis2}{RGB/cmyk}{140,230,215/0.45,0.0,0.20,0.0}%
+%% Nichtfarbige
+\@@_definecolor:nnn{Schwarz}{RGB/cmyk}{0,0,0/0,0,0,1}%
+\@@_definecolor:nnn{Weiss}{RGB/cmyk}{255,255,255/0,0,0,0}%
+% --
+\@@_definecolor:nnn{Grau100}{RGB/cmyk}{50,63,75/45,20,5,80}%
+\@@_definecolor:nnn{Grau80}{RGB/cmyk}{86,99,113/36,16,4,64}%
+\@@_definecolor:nnn{Grau60}{RGB/cmyk}{125,136,148/27,12,3,48}%
+\@@_definecolor:nnn{Grau40}{RGB/cmyk}{165,174,184/18,8,2,32}%
+\@@_definecolor:nnn{Grau20}{RGB/cmyk}{208,213,220/9,4,1,16}%
+\@@_definecolor:nnn{Grau10}{RGB/cmyk}{231,233,237/5,2,1,8}%
+%</header&peri>
+%    \end{macrocode}
+%
+% Es ist vielleicht brauchbar, gewisse \enquote{Farbprofile} bereits anzubieten.
+% Hierzu bedarf es jedoch Absprache mit dem CD Team, welche Farbkombination als \enquote{offizielle Farbkombinationen}
+% überhaupt erlaubt wären.
+%
