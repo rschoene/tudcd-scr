@@ -17,8 +17,8 @@
 
 -- Identifizierung
 module = "tudcd"
-pkgversion = "0.5.4"
-pkgdate    = "2026-01-25"
+pkgversion = "0.5.5"
+pkgdate    = "2026-01-30"
 
 -- Dateipfade
 sourcefiledir = "source"
@@ -32,11 +32,16 @@ testfiledir = "tests"
 -- Ich habe Literaturverweise, diese müssen mit in das Verzeichnis für die Dokumentation kopiert werden.
 typesetsuppfiles = { "*.bib" }
 -- Dies sind Dateien welche vor der eigentlichen Dokumentation gesetzt werden müssen.
-typesetdemofiles = { "article.tex" }
+typesetdemofiles = { "article.tex", "report.tex" }
 -- Diese beiden Dateien ergeben die Dokumentation.
-typesetfiles = { "tudcd-doc.dtx", "tudcd-common.dtx" ,"handbook.tex", "article.tex" }
+typesetfiles = { "handbook.tex", "tudcd-common.dtx" }
 -- Automatisches Updaten der Version und Datum
-tagfiles = { "tudcd-common.dtx" }
+tagfiles = { "tudcd-common.dtx", "handbook.tex" }
+--
+--specialtypesetting = specialtypesetting or {}
+--specialtypesetting["handbook.tex"] = {cmd = "lualatex -interaction=nonstopmode"}
+
+
 local mydate = os.date("!%Y-%m-%d")
 
 function update_tag(file, content, tagname, tagdate)
@@ -62,10 +67,22 @@ function update_tag(file, content, tagname, tagdate)
                           "\\newcommand\\tudcd@common@version{%d+%p%d+%p%d+}",
                           "\\newcommand\\tudcd@common@version{"..tagname.."}")
     content = string.gsub(content,
+                          "\\providecommand\\tudcd@common@version{%d+%p%d+%p%d+}",
+                          "\\providecommand\\tudcd@common@version{"..tagname.."}")
+    content = string.gsub(content,
                           "\\newcommand\\tudcd@common@date{%d%d%d%d/%d%d/%d%d}",
                           "\\newcommand\\tudcd@common@date{"..tagdate.."}")
+    content = string.gsub(content,
+                          "\\providecommand\\tudcd@common@date{%d%d%d%d/%d%d/%d%d}",
+                          "\\providecommand\\tudcd@common@date{"..tagdate.."}")
   end
 
+  local tagdate = string.gsub(tagdate, "-", ".")
+  if string.match(file, "handbook.tex") then
+    content = string.gsub(content,
+                          "\\date{%d+%p%d+%p%d+}",
+                          "\\date{"..tagdate.."}")
+  end
 --[[
   if string.match(file, "CTANREADME.md") then
     local tagdate = string.gsub(tagdate, "/", "-")

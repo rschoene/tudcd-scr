@@ -1,5 +1,174 @@
-\documentclass{scrartcl}
+\documentclass[
+  logo={
+    color=blue,
+    language=de,
+    colormodel=rgb
+  },
+  fontsize=11tudpt,
+  usemargin,
+  oneside
+]{tudcdreprt}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman=ngerman-x-latest]{hyphsubst}
+
+\usepackage[ngerman]{babel}
+\usepackage[babel]{microtype}
+\babelprovide[hyphenrules=ngerman-x-latest]{ngerman}
+
+\usepackage{biblatex}
+\addbibresource{handbook.bib}
+\addbibresource{source.bib}
+\usepackage{csquotes}
+\usepackage{hvlogos}
+
+\usepackage{siunitx}
+
+\usepackage{listings}
+\lstset{
+  language={[LaTeX]Tex},
+  basicstyle=\small\ttfamily,
+  literate=%
+  {Ö}{{\"O}}1
+  {Ä}{{\"A}}1
+  {Ü}{{\"U}}1
+  {ß}{{\ss}}1
+  {ü}{{\"u}}1
+  {ä}{{\"a}}1
+  {ö}{{\"o}}1
+  {~}{{\textasciitilde}}1,
+  numberstyle=\footnotesize,
+  backgroundcolor=\SelectTUDCDSecondBackgroundColor
+%  numbers=left,
+}
+
+\author{Jochen Diepelt}
+\title{TUDCD-Script: Offizielle Klassen und Pakete im Stil der TU Dresden}
+\subject{Handbuch}
+\date{2026.01.30}
+
+\TUDCDsetup{
+  titlepage={
+    highlight-color=Brilliantblau,
+    background-color=Blau2%
+  },
+  color={
+    highlight-color=Brilliantblau,
+    second-background-color=Blau2%
+  }
+}
 
 \begin{document}
-Hello World
+
+\maketitle%
+
+%%%%%%%%%%
+
+\tableofcontents
+
+%%%%%%%%%%
+
+\chapter{Einführung}
+
+Mit der Erneuerung des Corporate Designs der Technischen Universität Dresden wurden auch \LaTeX{} Klassen
+mit in Auftrag gegeben.
+Dabei wurde sich dazu entschieden, die \enquote{inoffiziellen Klassen} von Falk Hanisch~\cite{ctan-tudscr}
+abzulösen und eine neue Paketsammlung zu erstellen.
+Aus Archivierungsgründen bleibt jedoch die Paketsammlung \texttt{tudscr} auf \CTAN{} als solche erhalten,
+und daher wurde der Name \textbf{\texttt{tudcdscr}} für die neue Paketsammlung gewählt.
+
+\section{Allgemeine Einstellungen}
+
+Die grundlegenden Einstellungen von Optionen erfolgt über das Makro \lstinline|\TUDCDsetup|,
+welches die Schlüssel-Wert-Paare der Klassenoptionen entgegennimmt.
+
+\begin{lstlisting}
+\TUDCDsetup{
+  <Schlüssel>=<Wert>
+}
+\end{lstlisting}
+
+Die Optionen unterteilen sich dabei in drei Kategorien:
+\begin{enumerate}
+  \item globale Optionen, welche in \lstinline|\documentclass| geladen werden müssen,
+  \item späte Optionen, welche in der Dokumentenpräambel über \lstinline|\TUDCDsetup| geladen werden und
+  \item einfache Optionen, welche zu jeder Zeit im Dokument über \lstinline|\TUDCDsetup| geladen werden können.
+\end{enumerate}
+Einfache und späte Optionen können ebenfalls in \lstinline|\documentclass| eingestellt werden,
+während einfache Optionen auch in der Dokumentenpräambel geladen werden können.
+
+\section{Einstellungen des Logos}
+
+Das Logo der TUD hat 3 Merkmale, welche unabhängig voneinander eingestellt werden können,
+\begin{itemize}
+  \item die Logosprache, in Deutsch und Englisch,
+  \item die Logofarbe, in Blau, Weiß und Schwarz, sowie
+  \item das Logofarbmodel, in CMYK und in RGB.
+\end{itemize}
+Diese Merkmale werden über die einfachen Optionen
+\begin{lstlisting}
+\TUDCDsetup{
+  logo/language=<Wert>,
+  logo/color=<Wert>,
+  logo/colormodel=<Wert>
+}
+\end{lstlisting}
+eingestellt.
+
+\begin{description}
+  \item[\texttt{logo/language}] besitzt die zulässigen Werte \texttt{de}, \texttt{en} und \texttt{auto}
+  \item[\texttt{logo/color}] besitzt die zulässigen Werte \texttt{white}, \texttt{black} und \texttt{blue}
+  \item[\texttt{logo/model}] besitzt die zulässigen Werte \texttt{cmyk}, \texttt{rgb} und \texttt{auto}
+\end{description}
+Bei der Einstellung \texttt{auto} versucht die Klasse zu einem geeigneten Zeitpunkt die Option aus anderen Informationen
+zu setzen, dies muss jedoch zwischen Versionen nicht unbedingt stabil bleiben.
+Zu bevorzugen sind definitiv die festen Werte.
+
+Die Einstellungen können ebenfalls über \texttt{color} gesetzt werden
+\begin{lstlisting}
+\TUDCDsetup{
+  logo={
+    language=<Wert>,
+    color=<Wert>,
+    colormodel=<Wert>
+  }
+}
+\end{lstlisting}
+
+Mit den Logoeinstellungen kann anschließend das Logo mittels \lstinline|\TypesetTUDLogo| gesetzt werden.
+\begin{lstlisting}
+\TypesetTUDLogo{<Dimension>}
+\end{lstlisting}
+
+\textbf{ACHTUNG:} Das Logo besitzt eine Unterlänge, weswegen der Shape des Logos immer \emph{kleiner} sein wird,
+als die angegeben Größe. Die Dimension muss mit dem Faktor \num{1.13} multipliziert werden, damit der Shape die angegebene Größe hat.
+
+\TUDCDsetup{
+  color={
+    highlight-color=Tuerkis1
+  }
+}
+
+\chapter{Dokumente im Stil der TU Dresden}
+  Hauptklassen \texttt{tudcdartcl} und \texttt{tudcdreprt}
+
+Zum Zeitpunkt des Schreibens sind die beiden Hauptklassen
+\texttt{tudcdartcl} und \texttt{tudcdreprt}.
+
+\section{Einstellungen}
+
+
+
+
+\subsection{Wieder anderer Test}
+
+\subsubsection{Noch ein Test}
+
+\TUDCDsetup{
+  color={
+    highlight-color=Brilliantblau
+  }
+}
+\printbibliography%
+
 \end{document}
