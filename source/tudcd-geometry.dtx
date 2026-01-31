@@ -312,6 +312,10 @@
   }{
     \UseInstance{tudcd/setgeometry}{marginfalse}
   }
+  \IfPackageLoadedT{multicol}{
+    \setlength\columnwidth{\dimexpr(2\l_@@_grid_column_width_dim+\l_@@_grid_column_sep_dim)}
+    \setlength\columnsep{\dimexpr(1\l_@@_grid_column_sep_dim)}
+  }
 }
 %</header&peri>
 %    \end{macrocode}
