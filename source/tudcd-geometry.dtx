@@ -151,6 +151,7 @@
 \str_new:N\l_@@_geometry_instance_name_str
 \bool_new:N\l_@@_geometry_margin_bool
 \bool_set_false:N\l_@@_geometry_margin_bool
+\bool_new:N\l_@@_geometry_twoside_bool
 %</prelim-declaration>
 %    \end{macrocode}
 %
@@ -189,6 +190,10 @@
   usemargin .bool_set:N = \l_@@_geometry_margin_bool,
   usemargin .default:n = { true },
   usemargin .initial:n = { false },
+  oneside .code:n = { \bool_set_false:N\l_@@_geometry_twoside_bool },
+  oneside .value_forbidden:n = { true },
+  twoside .code:n = { \bool_set_true:N\l_@@_geometry_twoside_bool },
+  twoside .value_forbidden:n = { true },
 %</article|report|book|thesis>
 %</option-geometry&peri>
 %    \end{macrocode}
@@ -263,21 +268,44 @@
 \msg_error:nnV{ tudcd }{geometry/papersizeerror}\l_@@_geometry_paper_size_str
   }
   \bool_if:nTF{\l_tmpa_bool}{% use the margin
-    \geometry{
-      includemp,
-      paper=\str_use:N\l_@@_geometry_paper_size_str,
-      inner=\dim_use:N\l_@@_inner_margin_dim,
-      outer=\dim_use:N\l_@@_outer_margin_dim,
-      top=\dim_use:N\l_@@_top_margin_dim,
-      bottom=\dim_use:N\l_@@_bottom_margin_dim
+    \bool_if:nTF{\l_@@_geometry_twoside_bool}{
+      \geometry{
+        includemp,
+        twoside,
+        paper=\str_use:N\l_@@_geometry_paper_size_str,
+        inner=\dim_use:N\l_@@_inner_margin_dim,
+        outer=\dim_use:N\l_@@_outer_margin_dim,
+        top=\dim_use:N\l_@@_top_margin_dim,
+        bottom=\dim_use:N\l_@@_bottom_margin_dim
+      }
+    }{
+      \geometry{
+        includemp,
+        paper=\str_use:N\l_@@_geometry_paper_size_str,
+        inner=\dim_use:N\l_@@_inner_margin_dim,
+        outer=\dim_use:N\l_@@_outer_margin_dim,
+        top=\dim_use:N\l_@@_top_margin_dim,
+        bottom=\dim_use:N\l_@@_bottom_margin_dim
+      }
     }
   }{
-    \geometry{
-      paper=\str_use:N\l_@@_geometry_paper_size_str,
-      inner=\dim_use:N\l_@@_inner_margin_dim,
-      outer=\dim_use:N\l_@@_outer_margin_dim,
-      top=\dim_use:N\l_@@_top_margin_dim,
-      bottom=\dim_use:N\l_@@_bottom_margin_dim
+    \bool_if:nTF{\l_@@_geometry_twoside_bool}{
+      \geometry{
+        twoside,
+        paper=\str_use:N\l_@@_geometry_paper_size_str,
+        inner=\dim_use:N\l_@@_inner_margin_dim,
+        outer=\dim_use:N\l_@@_outer_margin_dim,
+        top=\dim_use:N\l_@@_top_margin_dim,
+        bottom=\dim_use:N\l_@@_bottom_margin_dim
+      }
+    }{
+      \geometry{
+        paper=\str_use:N\l_@@_geometry_paper_size_str,
+        inner=\dim_use:N\l_@@_inner_margin_dim,
+        outer=\dim_use:N\l_@@_outer_margin_dim,
+        top=\dim_use:N\l_@@_top_margin_dim,
+        bottom=\dim_use:N\l_@@_bottom_margin_dim
+      }
     }
   }
 }
