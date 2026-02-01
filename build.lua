@@ -16,7 +16,7 @@
 
 
 -- Identifizierung
-module = "tudcd"
+module = "tudcdscr"
 pkgversion = "0.5.5"
 pkgdate    = "2026-01-30"
 
@@ -29,18 +29,23 @@ supportdir = "support"
 ]]
 demofiledir = "examples"
 testfiledir = "tests"
+imagefiles = { "logo/*.pdf", "logo/*.eps" }
 -- Ich habe Literaturverweise, diese müssen mit in das Verzeichnis für die Dokumentation kopiert werden.
 typesetsuppfiles = { "*.bib" }
 -- Dies sind Dateien welche vor der eigentlichen Dokumentation gesetzt werden müssen.
-typesetdemofiles = { "article.tex", "report.tex" }
+typesetdemofiles = { "demo-*.tex" }
+excludefiles = {"*~","build.lua","config-*.lua","__**/*","demo-*.tex","handbook.tex"}
 -- Diese beiden Dateien ergeben die Dokumentation.
 typesetfiles = { "handbook.tex", "tudcd-common.dtx" }
 -- Automatisches Updaten der Version und Datum
 tagfiles = { "tudcd-common.dtx", "handbook.tex" }
---
---specialtypesetting = specialtypesetting or {}
---specialtypesetting["handbook.tex"] = {cmd = "lualatex -interaction=nonstopmode"}
 
+sourcefiles = { "*.ins", "*.dtx", "logo" }
+installfiles = { "*.sty", "*.cls","logo" }
+tdslocations = {"tex/latex/tudcdscr/logo/TUD-Logo*.pdf","tex/latex/tudcdscr/logo/TUD-Logo*.eps" }
+
+flatten = false
+flattentds = false
 
 local mydate = os.date("!%Y-%m-%d")
 
@@ -75,6 +80,7 @@ function update_tag(file, content, tagname, tagdate)
     content = string.gsub(content,
                           "\\providecommand\\tudcd@common@date{%d%d%d%d/%d%d/%d%d}",
                           "\\providecommand\\tudcd@common@date{"..tagdate.."}")
+    -- Zusätzlich wird "version-dev" mit dem momentanen Tag ersetzt
   end
 
   local tagdate = string.gsub(tagdate, "-", ".")
@@ -96,3 +102,43 @@ function update_tag(file, content, tagname, tagdate)
 ]]
   return content
 end
+
+-- Configuration for ctan
+ctanreadme = "CTANREADME.md"
+ctanpkg    = "tudcdscr"
+ctanzip    = ctanpkg.."-"..pkgversion
+packtdszip = false
+
+-- Load personal data for ctan upload
+local ok, mydata = pcall(require, "mypersonaldata.lua")
+if not ok then
+  mydata = { email="XXX", uploader="YYY", }
+end
+
+uploadconfig = {
+  author      = "Yoshi Diepelt",
+  uploader    = mydata.uploader,
+  email       = mydata.email,
+  pkg         = ctanpkg,
+  version     = pkgversion,
+  license     = "lppl1.3c",
+  summary     = "TUDCD-Script -- Corporate Design of Dresden University of Technology",
+  description = [[This is the official bundle of classes implementing the 2025 Corporate Design of the Dresden University of Technology.]],
+  topic       = { "presentation", "german-doc", "class", "doc-templ", "std-conform" },
+  ctanPath    = "/macros/latex/contrib/" .. ctanpkg,
+  repository  = "https://github.com/tud-cd/tudcd-scr",
+  bugtracker  = "https://github.com/tud-cd/tudcd-scr/issues",
+  support     = "https://github.com/tud-cd/tudcd-scr/issues",
+  announcement_file="ctan.ann", -- The Announcement
+  note_file   = "ctan.note", -- for the CTAN Team
+  update      = false,
+}
+
+-- Clean files
+cleanfiles = {
+  ctanzip..".curlopt",
+  ctanzip..".zip",
+  "example.log",
+  "example.pdf",
+  "demopkg.pdf",
+}

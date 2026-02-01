@@ -64,3 +64,4 @@ source/install/*.mtx
 source/install/*.sh
 source/install/*.tex
 __*
+mypersonaldata.lua
