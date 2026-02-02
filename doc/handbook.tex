@@ -464,7 +464,7 @@ Eine beispielhafte Datei für einen englischen Artikel ist angegeben.
   \centering
   \setlength\fboxsep{0pt}
   \fbox{\includegraphics[width=\dimexpr(3\tudcdGridColumnwidth+2\tudcdGridColumnsep)]{demo-article.pdf}}
-  \caption{Resultat des der Beispieldatei}
+  \caption{Resultat der Beispieldatei}
 \end{figure}
 
 \subsection{Eine Berichtklasse im Broschürendesign}
@@ -495,7 +495,7 @@ Marginalie eingeschaltet ist. Um daher Broschüren zu setzen, ist bei eingeschal
   \subcaptionbox{Dritte Seite}{
     \fbox{\includegraphics[page=3,width=\dimexpr(2\tudcdGridColumnwidth+1\tudcdGridColumnsep)]{demo-report.pdf}}
   }
-  \caption{Resultat des der Beispieldatei}
+  \caption{Resultat der Beispieldatei}
 \end{figure}
 
 \TUDCDsetup{
@@ -508,9 +508,11 @@ Marginalie eingeschaltet ist. Um daher Broschüren zu setzen, ist bei eingeschal
 
 Zum Zeitpunkt des Schreibens wird eine \texttt{beamer}~\cite{ctan-beamer} Präsentationsvorlage
 bereitgestellt, welche jedoch die vorangegangenen Konfigurationen nicht teilt.
+Zum Beispiel ist das Einstellen der Optionen herkömmlich über \emph{gewöhnliche Klassenoptionen}
+gelöst, und nicht über \lstinline|\TUDCDsetup|. An einer Aktualisierung wird gearbeitet.
 
 Dies liegt unter anderem daran, dass diese Klasse parallel zu den anderen Klassen entstanden ist,
-und eine Überarbeitung noch vorliegt.
+und eine Überarbeitung noch geplant ist.
 
 \section{Laden des Beamertemplates}
 
@@ -519,6 +521,13 @@ Nach erfolgter Installation des Paketbundles kann das Corporate Design der TU Dr
 \usetheme{tudcd}
 \end{lstlisting}
 eingestellt werden.
+
+\subsection{Optionen}
+
+Das englische Logo kann mittels \texttt{englishlogo} eingestellt werden
+\begin{lstlisting}
+\usetheme[englishlogo]{tudcd}
+\end{lstlisting}
 
 \subsection{Zusätzliche Möglichkeiten}
 
@@ -530,7 +539,42 @@ Zweitlogos ermöglicht.
 Da \lstinline|\secondlogos| eine kommaseparierte Liste an Einträgen erwartet, können die Dateipfade keine Kommata enthalten.
 Die Logos werden von Links nach Rechts rechtsbündig in den dafür vorgesehenen Bereich platziert.
 
+Die Titelfolie, welche mit \lstinline|\maketitle| gesetzt wird, hat mehrere \emph{Farbmodi},
+welche die Farbe beeinflussen.
+Diese können durch das Umschalten der Beamertemplate \lstinline|title page/colormode| eingestellt werden.
+\begin{lstlisting}
+  \setbeamertemplate{title page/colormode}[blue]
+
+  \setbeamertemplate{title page/colormode}[white]
+\end{lstlisting}
+
+
 \section{Fertige Beispielpräsentationen}
+
+
+\lstinputlisting[linerange=\%\ Start-\%\ End]{demo-pres.tex}
+\marginpar{Klicken Sie hier um die Datei aus der PDF zu extrahieren.
+\textattachfile{demo-pres.tex}{\texttt{demo-pres.tex}}}
+
+
+\begin{figure}[hb]
+  \centering
+  \setlength\fboxsep{0pt}
+  \subcaptionbox{Erste Seite}{
+    \fbox{\includegraphics[page=1,width=\dimexpr(2\tudcdGridColumnwidth+1\tudcdGridColumnsep)]{demo-pres.pdf}}
+  }
+  \subcaptionbox{Zweite Seite}{
+    \fbox{\includegraphics[page=2,width=\dimexpr(2\tudcdGridColumnwidth+1\tudcdGridColumnsep)]{demo-pres.pdf}}
+  }
+
+  \subcaptionbox{Dritte Seite}{
+    \fbox{\includegraphics[page=3,width=\dimexpr(2\tudcdGridColumnwidth+1\tudcdGridColumnsep)]{demo-pres.pdf}}
+  }
+  \subcaptionbox{Vierte Seite}{
+    \fbox{\includegraphics[page=4,width=\dimexpr(2\tudcdGridColumnwidth+1\tudcdGridColumnsep)]{demo-pres.pdf}}
+  }
+  \caption{Resultat der Beispieldatei}
+\end{figure}
 
 \TUDCDsetup{
   color={
