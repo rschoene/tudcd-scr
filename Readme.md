@@ -25,4 +25,18 @@ im Release Bereich bereit.
 
 ## Beispieldateien
 
-Beispieldateien befinden sich innerhalb des `examples` Verzeichnisses.
+Beispieldateien befinden sich innerhalb des `doc` Verzeichnisses sowie innerhalb des Handbuchs.
+
+# Versionsverlauf
+
+* `%dev-version%` Neuschreiben mit `expl3`-Syntax zum Zwecke der Vereinheitlichung und Wartbarkeit.
+  * Wechseln zum System `l3build`
+  * Verbesserte Einstellung von Schriften in LuaLaTeX, Danke an @tipfom für den Input.
+  * Einführen von `\TUDCDsetup` als zentrale Schnittstelle für Einstellungen von Klassenoptionen
+  * Einführen der Optionen `logo/language`, `logo/color`, `logo/colormodel`
+  * Einführen der Optionen `useseriffont`
+  * Verbessern der globalen Option `fontsize`
+  * Flexiblere Gestaltung der internen Geometrieeinstellungen
+  * Einführen von flexibleren Schnittstellen für die Ausgabe von
+    Titelseiten
+  * Bessere Fehlermeldungen bei nicht erlaubten Kombinationen von Einstellungen
