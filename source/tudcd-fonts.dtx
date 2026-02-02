@@ -125,13 +125,32 @@
 %    \end{macrocode}
 %
 % Anschließend werden die einzelnen Schriftarten in Abhängigkeit der verwendeten Engine eingestellt.
-% Um die
+% \todo{Leider werden von \texttt{noto} nicht alle Schriftfamilien eingebunden, dies muss mittels \texttt{\textbackslash setmainfont} nochmals manuell erfolgen.}
 %    \begin{macrocode}
+\iow_log:n{Test}
+\iow_log:n{FONT 0: '\str_use:N\c_sys_engine_exec_str'}
 \sys_if_engine_opentype:TF{
 \RequirePackage{fontspec}
   % Hier wird LuaTeX oder XeTeX verwendet
-\renewcommand{\bfdefault}{SemiBold}
-\renewcommand{\mddefault}{Medium}
+
+\setmainfont{NotoSerif}[
+  FontFace = {medium}{n}{*-Medium},
+  FontFace = {sb}{n}{*-SemiBold}
+]
+\setsansfont{NotoSans}[
+  FontFace = {medium}{n}{*-Medium},
+  FontFace = {sb}{n}{*-SemiBold}
+]
+\setmonofont{NotoMono}
+
+\renewcommand{\bfdefault}{sb}
+\renewcommand{\mddefault}{medium}
+
+\bool_if:nTF{\l_@@_use_seriffont_bool}{
+  \renewcommand*{\familydefault}{\rmdefault}
+}{
+  \renewcommand*{\familydefault}{\sfdefault}
+}
 %    \end{macrocode}
 %
 % Dabei werden für die Auswahl der einzelnen Schriftschnitte separate Befehle bereitgestellt.
@@ -157,6 +176,8 @@
 \DeclareRobustCommand{\cdubseries}{\fontseries{Black}\selectfont}
 \DeclareTextFontCommand{\textcdub}{\cdubseries}
 }{ % Hier ist pdfTeX verwendet worden.
+\typeout{FONT 1b: '\rmdefault' and '\sfdefault'. Familydefault is '\familydefault'}
+
 \renewcommand{\bfdefault}{sb}
 \renewcommand{\mddefault}{medium}
 %    \end{macrocode}
