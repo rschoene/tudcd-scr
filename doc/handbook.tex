@@ -352,6 +352,23 @@ wird die globale Option \texttt{usemargin} bereitgestellt.
 Dabei ist standardmäßig die Marginalie ausgeschaltet, die alleinige Angabe von \texttt{usemargin}
 stellt diese ein.
 
+\subsection{Einstellungen des Flattersatzes}
+
+Gemäß Corporate Design Leitfaden werden Texte im \emph{linksbündigem Satz}
+gesetzt. Dafür wird die späte Option \texttt{flush-left} bereitgestellt.
+Um den linksbündigen Satz auszuschalten wird ebenfalls die späte Option \texttt{no-flush-left}
+bereitgestellt.
+\begin{lstlisting}
+\documentclass{<Klasse>}
+\TUDCDsetup{
+  flush-left=<Wahrheitswert>,
+}
+\TUDCDsetup{
+  no-flush-left
+}
+\begin{document}
+\end{lstlisting}
+
 \section{Schrifteinstellungen}
 
 \subsection{Schriftgrößen}

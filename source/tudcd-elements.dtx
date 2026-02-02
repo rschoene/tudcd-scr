@@ -65,6 +65,46 @@
 %
 % Für Einstellungen der Abschnittsüberschriften wird das Macro \dmacro{\RedeclareSectionCommand}, ebenfalls aus \KOMAScript~\cite{komascriptDocs}, verwendet.
 %
+% \subsection{Optionen}
+%
+% Das Corporate Design sieht vor, dass der Haupttext im Flattersatz gesetzt wird.
+% Da für wissenschaftliche Publikationen jedoch ein Flattersatz unüblich ist, wird hier eine Option eingeführt,
+% welche diesen steuert.
+%    \begin{macrocode}
+%<*prelim-declaration>
+\bool_new:N\l_@@_elements_ragged_right_bool
+%</prelim-declaration>
+%    \end{macrocode}
+%
+% Die beiden Optionen \doption{flush-left} und \doption{no-flush-left} werden eingeführt
+% um den Flattersatz zu steuern.
+%
+%    \begin{macrocode}
+%<*option-ragged&peri>
+  flush-left .bool_set:N = \l_@@_elements_ragged_right_bool,
+  flush-left .default:n = true,
+  flush-left .initial:n = true,
+  flush-left .usage:n = preamble,
+  no-flush-left .bool_set_inverse:N = \l_@@_elements_ragged_right_bool,
+  no-flush-left .default:n = true,
+  no-flush-left .usage:n = preamble,
+%</option-ragged&peri>
+%    \end{macrocode}
+%
+% Dabei wird dies mit dem Paket \dpkg{ragged2e} umgesetzt, da dieses ermöglicht, Wörter im
+% Flattersatz umzubrechen, was mit dem \LaTeX\ Befehl \dmacro{\raggedright} nicht möglich ist.
+%
+%    \begin{macrocode}
+%<*body&peri>
+\RequirePackage{ragged2e}
+\hook_gput_code:nnn{begindocument/end}{set-tudcd-raggedright}{
+  \bool_if:nT{\l_@@_elements_ragged_right_bool}{
+    \RaggedRight%
+  }
+}
+%</body&peri>
+%    \end{macrocode}
+%
 % \subsection{Konfiguration der Überschriften einzelner Gliederungsebenen}
 %
 %
