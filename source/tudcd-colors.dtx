@@ -139,19 +139,9 @@
   color/secondary-color .initial:n = {.},
   color/tertiary-color .tl_set:N = \l_@@_second_background_color_tl,
   color/tertiary-color .initial:n = {.},
-  color/model .choices:nn = {
-    rgb, cmyk
-  }{
-    \str_case:VnF\l_keys_choice_str{
-      {rgb}{
-        \tl_set:Nn\l_color_fixed_model_tl{rgb}
-      }
-      {cmyk}{
-        \tl_set:Nn\l_color_fixed_model_tl{cmyk}
-      }
-    }{
-% Todo: ERROR Message
-    }
+  % Robust handler for color/model: set internal token list to the given value.
+  color/model .code:n = {
+    	l_set:Nn \l_color_fixed_model_tl { #1 }
   },
   color/model .initial:n = rgb,
 %</option&peri>
@@ -175,7 +165,10 @@
 % Colorname, Models, Values
 \cs_new:Nn \@@_definecolor:nnn
 {
-  \color_set:nnn{#1}{#2}{#3}
+  % Use expl3 color helper if available; otherwise fall back to classic \definecolor.
+  \cs_if_exist:NTF \color_set:nnn
+    { \color_set:nnn{#1}{#2}{#3} }
+    { }
   \definecolor{#1}{#2}{#3}%
 }
 %    \end{macrocode}

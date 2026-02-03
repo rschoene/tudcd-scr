@@ -363,9 +363,8 @@
   {
     \keys_set:nn { tudcd / logo }{ #1 }
   },
-  logo/language .choices:nn =
-  { de, en, auto }
-  { \str_if_eq:nVTF { auto } { \l_keys_choice_str } {
+  logo/language .code:n = {
+    \str_if_eq:nnTF {#1} {auto} {
       \hook_gput_next_code:nn{package/babel/after}{
         \str_set:Ne \l_@@_logolang_str { \BCPdata{main.language} }
       }
@@ -373,21 +372,13 @@
         \str_set:Ne \l_@@_logolang_str { \BCPdata{main.language} }
       }
     }{
-       \str_set_eq:NN \l_@@_logolang_str \l_keys_choice_str
+      \str_set:Nn \l_@@_logolang_str { #1 }
     }
   },
   logo/language .initial:n = { de },
-  logo/colormodel .choices:nn =
-  { cmyk, rgb }
-  {
-    \str_set_eq:NN \l_@@_logomodel_str \l_keys_choice_str
-  },
+  logo/colormodel .code:n = { \str_set:Nn \l_@@_logomodel_str { #1 } },
   logo/colormodel .initial:n = { rgb },
-  logo/color .choices:nn =
-  { blue, white, black }
-  {
-    \str_set_eq:NN \l_@@_logocolor_str \l_keys_choice_str
-  },
+  logo/color .code:n = { \str_set:Nn \l_@@_logocolor_str { #1 } },
   logo/color .initial:n = { blue },
 %</option&peri&class>
 %    \end{macrocode}
