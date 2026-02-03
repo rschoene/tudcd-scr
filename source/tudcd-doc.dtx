@@ -41,8 +41,6 @@
 
 \usepackage{babel}
 \usepackage[babel]{microtype}
-\RecordChanges
-\PrintChanges
 \begin{document} % Diese Dokumentation dokumentiert NUR diese Datei
   \title{\Large Dokumentation des \texttt{tudcd}-Quelltexts}
   \subtitle{ Stand von \today }
@@ -50,14 +48,17 @@
   \maketitle
   \tableofcontents
 
-
-  \DocInput{tudcd-base.dtx}
-  \DocInput{tudcd-color.dtx}
-  \DocInput{tudcd-font.dtx}
-  \DocInput{tudcd-area.dtx}
+  \DocInput{tudcd-common.dtx}
+  \DocInput{tudcd-documents.dtx}
+  \DocInput{tudcd-geometry.dtx}
+  \DocInput{tudcd-fonts.dtx}
+  \DocInput{tudcd-colors.dtx}
+  \DocInput{tudcd-pagestyles.dtx}
   \DocInput{tudcd-elements.dtx}
-  \DocInput{tudcd-specialpages.dtx}
+
   \DocInput{tudcd-beamertheme.dtx}
+
+  \DocInput{tudcd-doc.dtx}
 
   \printbibliography%
 \end{document}
@@ -66,7 +67,7 @@
 %
 % \selectlanguage{ngerman}
 %
-% \section{Dokumentationsklasse}
+% \section{\texttt{tudcd-doc.dtx}: Eine Dokumentationsklasse}
 %
 % Informationen über diese Datei
 %    \begin{macrocode}
@@ -155,7 +156,7 @@
 \ExplSyntaxOff
 %    \end{macrocode}
 %
-% \section{Besondere Makros für die Dokumentation}
+% \subsection{Besondere Makros für die Dokumentation}
 %
 % \begin{codedescribe}[
 % macro,

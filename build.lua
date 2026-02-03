@@ -36,7 +36,7 @@ typesetsuppfiles = { "*.bib" }
 typesetdemofiles = { "demo-*.tex" }
 excludefiles = {"*~","build.lua","config-*.lua","__**/*","demo-*.tex","handbook.tex"}
 -- Diese beiden Dateien ergeben die Dokumentation.
-typesetfiles = { "handbook.tex", "tudcd-common.dtx" }
+typesetfiles = { "handbook.tex", "tudcd-doc.dtx" }
 -- Automatisches Updaten der Version und Datum
 tagfiles = { "*.dtx", "handbook.tex", "Readme.md" }
 
